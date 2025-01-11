@@ -1,0 +1,106 @@
+Sera um modulo npm que consome uma api externa, com um client.ts que faz as requisicoes e um types.ts com os tipos de dados que sera retornado pela api
+
+# Estrutura do Projeto:
+    my-api-consumer-client/
+    ├── package.json
+    ├── tsconfig.json
+    ├── src/
+    │   ├── index.ts
+    │   ├── client.ts
+    │   ├── types/
+    │   │   └── index.ts
+    │   └── utils/
+    │       └── http.ts
+    ├── tests/
+    └── README.md
+
+## Tecnologias Recomendadas:
+    TypeScript (para tipagem estática)
+    Axios ou Fetch (para requisições HTTP)
+    Jest (para testes)
+    ESLint + Prettier (para padronização de código)
+    Rollup ou esbuild (para bundle)
+    semantic-release (para versionamento automático)
+## Configurações Importantes no package.json:
+    {
+    "name": "@seu-escopo/nome-pacote",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "sideEffects": false
+    }
+
+## Funcionalidades Recomendadas:
+## Configuração via objeto de opções
+    Interceptors para requisições/respostas
+    Retry automático
+    Cache (opcional)
+    Rate limiting
+    Tipagem forte
+    Documentação com JSDoc
+## Padrões de Uso:
+    // Como seus usuários usariam
+    import { ApiClient } from '@seu-escopo/nome-pacote';
+
+    const api = new ApiClient({
+    baseURL: 'https://api.exemplo.com',
+    timeout: 5000,
+    apiKey: 'sua-chave'
+    });
+## Publicação:
+## Comandos para publicar
+    npm login
+    npm publish --access public
+## CI/CD Recomendado:
+    GitHub Actions ou CircleCI
+    Testes automatizados
+    Build automático
+    Publicação automática
+    Geração de changelog
+## Documentação Necessária:
+    README.md completo
+    Exemplos de uso
+    Guia de contribuição
+    Changelog
+    Documentação da API
+    TypeDoc para documentação técnica
+## Boas Práticas:
+    Versionamento semântico
+    Testes unitários e de integração
+    Zero dependencies (ou mínimo possível)
+    Tree-shakeable
+    ESM e CommonJS support
+    TypeScript strict mode
+##Ferramentas Úteis:
+    np (para publicação)
+    commitlint (para padronização de commits)
+    husky (para git hooks)
+    size-limit (para controle de tamanho)
+    bundlephobia (para análise de bundle)
+## Segurança:
+    Dependabot para atualizações
+    Snyk para análise de vulnerabilidades
+    npm audit fix automático
+    Sanitização de inputs
+## Monitoramento:
+    npm-stat para estatísticas
+    GitHub Insights
+    Codecov para cobertura de testes
+Esta estrutura permite criar uma biblioteca profissional, mantível e segura para distribuição via NPM. Os usuários poderão instalar com:
+
+
+npm install @seu-escopo/nome-pacote
+# ou
+yarn add @seu-escopo/nome-pacote
+Lembre-se de:
+
+Manter a documentação atualizada
+Seguir o versionamento semântico
+Testar em diferentes ambientes
+Fornecer suporte via GitHub Issues
+Manter um changelog atualizado
+Criar releases com notas detalhadas
