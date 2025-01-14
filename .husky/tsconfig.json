@@ -3,7 +3,7 @@
 		"target": "es2020",
 		"module": "commonjs",
 		"declaration": true,
-		"outDir": "./dist",
+		"outDir": "../../dist",
 		"strict": true,
 		"strictPropertyInitialization": false,
 		"esModuleInterop": true,
@@ -11,15 +11,13 @@
 		"forceConsistentCasingInFileNames": true,
 		"rootDir": "./src",
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"moduleResolution": "node",
+		"emitDecoratorMetadata": true
 	},
 	"include": [
-		"src/**/*"
+		"src"
 	],
 	"exclude": [
 		"node_modules",
-		"dist",
-		"**/*.spec.ts"
+		"dist"
 	]
 }

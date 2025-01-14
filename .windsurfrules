@@ -7,6 +7,13 @@ Sera um modulo npm que consome uma api externa, com um client.ts que faz as requ
     ├── src/
     │   ├── index.ts
     │   ├── client.ts
+    |   ├── interfaces/
+    │   │   ├── success-response.interface.ts
+    │   │   ├── user.interface.ts
+    │   ├── |mocks/
+    │   │   ├── mock-token.mock.ts
+    │   ├── repository/
+    │   │   ├── user.repository.ts
     │   ├── types/
     │   │   └── index.ts
     │   └── utils/
@@ -42,19 +49,6 @@ Sera um modulo npm que consome uma api externa, com um client.ts que faz as requ
     Rate limiting
     Tipagem forte
     Documentação com JSDoc
-## Padrões de Uso:
-    // Como seus usuários usariam
-    import { ApiClient } from '@seu-escopo/nome-pacote';
-
-    const api = new ApiClient({
-    baseURL: 'https://api.exemplo.com',
-    timeout: 5000,
-    apiKey: 'sua-chave'
-    });
-## Publicação:
-## Comandos para publicar
-    npm login
-    npm publish --access public
 ## CI/CD Recomendado:
     GitHub Actions ou CircleCI
     Testes automatizados
@@ -93,14 +87,18 @@ Sera um modulo npm que consome uma api externa, com um client.ts que faz as requ
 Esta estrutura permite criar uma biblioteca profissional, mantível e segura para distribuição via NPM. Os usuários poderão instalar com:
 
 
-npm install @seu-escopo/nome-pacote
-# ou
-yarn add @seu-escopo/nome-pacote
-Lembre-se de:
-
 Manter a documentação atualizada
 Seguir o versionamento semântico
 Testar em diferentes ambientes
 Fornecer suporte via GitHub Issues
 Manter um changelog atualizado
 Criar releases com notas detalhadas
+
+## observacoes:
+
+- usar sempre o yarn
+- o axios é um modulo que consome uma api externa, com um client.ts que faz as requisicoes e um types.ts com os tipos de dados que sera retornado pela api
+- o types.ts contera os tipos de dados que sera retornado pela api
+- o client.ts fara as requisicoes e retornara os dados
+- o index.ts exportara o client.ts
+- sera um modulo para o nestjs.

@@ -1,0 +1,47 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""JSON custom scalar type"""
+scalar JSON
+
+type Mutation {
+  deleteMe: Boolean!
+  updateMe(input: UpdateUserInput!): User!
+}
+
+type Query {
+  me: User!
+}
+
+type Team {
+  client_metadata: JSON
+  client_read_only_metadata: JSON
+  created_at_millis: Float!
+  display_name: String!
+  id: String!
+  name: String!
+  profile_image_url: String
+  server_metadata: JSON
+}
+
+input UpdateUserInput {
+  displayName: String
+  primaryEmail: String
+}
+
+type User {
+  client_metadata: JSON
+  client_read_only_metadata: JSON
+  display_name: String
+  id: String!
+  last_active_at_millis: Float!
+  primary_email: String
+  primary_email_auth_enabled: Boolean!
+  primary_email_verified: Boolean!
+  profile_image_url: String
+  selected_team: Team
+  selected_team_id: String
+  server_metadata: JSON
+  signed_up_at_millis: Float!
+}

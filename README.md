@@ -1,37 +1,55 @@
 # My API Consumer Client
 
-Cliente TypeScript para consumo de API externa.
+Módulo NestJS para consumo de API externa.
 
 ## Instalação
 
 ```bash
-npm install my-api-consumer-client
+yarn add my-api-consumer-client
 ```
 
 ## Uso
 
 ```typescript
-import { ApiClient } from 'my-api-consumer-client';
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { ApiClientModule } from 'my-api-consumer-client';
 
-const client = new ApiClient('https://api.exemplo.com', 'seu-api-key');
+@Module({
+  imports: [
+    ApiClientModule.register({
+      baseURL: 'https://api.exemplo.com',
+      apiKey: 'seu-api-key',
+    }),
+  ],
+})
+export class AppModule {}
 
-// Exemplo de uso
-async function exemplo() {
-  try {
-    const response = await client.getData();
-    console.log(response);
-  } catch (error) {
-    console.error(error);
+// seu-servico.service.ts
+import { Injectable } from '@nestjs/common';
+import { ApiClientService } from 'my-api-consumer-client';
+
+@Injectable()
+export class SeuServico {
+  constructor(private readonly apiClient: ApiClientService) {}
+
+  async buscarDados() {
+    try {
+      const response = await this.apiClient.getData();
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 ```
 
 ## Scripts Disponíveis
 
-- `npm run build`: Compila o projeto
-- `npm run lint`: Executa o ESLint
-- `npm run format`: Formata o código com Prettier
-- `npm test`: Executa os testes
+- `yarn build`: Compila o projeto
+- `yarn lint`: Executa o ESLint
+- `yarn format`: Formata o código com Prettier
+- `yarn test`: Executa os testes
 
 ## Licença
 
