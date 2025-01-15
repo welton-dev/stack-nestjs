@@ -1,5 +1,3 @@
-import { ContextType } from '@nestjs/common';
-
 // Interfaces para os tipos de dados retornados pela API
 export interface ApiResponse<T> {
 	data: T;

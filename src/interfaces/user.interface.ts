@@ -1,5 +1,6 @@
 import { ObjectMap } from './object-map.interface';
 import { ITeam } from './team.interface';
+import { SuccessResponse } from './success-response.interface';
 
 export interface IUser {
 	readonly id: string;
@@ -15,4 +16,30 @@ export interface IUser {
 	client_metadata: ObjectMap | null;
 	client_read_only_metadata: ObjectMap | null;
 	server_metadata: ObjectMap | null;
+}
+
+export interface IUserUpdate extends Partial<Omit<IUser, 'id'>> {}
+
+export interface IUserResponse extends SuccessResponse {
+	user: IUser;
+}
+
+export interface IUserCreate extends Partial<IUser> {
+	primary_email: string;
+	display_name: string;
+}
+
+export interface IUserQueryParams {
+	team_id?: string;
+	limit?: number;
+	cursor?: string;
+	order_by?: 'signed_up_at' | 'display_name' | 'primary_email';
+	desc?: boolean;
+	query?: string;
+}
+
+export interface IUserListResponse extends SuccessResponse {
+	users: IUser[];
+	next_cursor?: string;
+	total?: number;
 }

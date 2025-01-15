@@ -1,6 +1,7 @@
-import { Controller, Get, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from '../entities/user.entity';
+import { IUserQueryParams } from '../interfaces/user.interface';
+import { User } from '../models/user.model';
 
 @Controller('users')
 export class UserController {
@@ -24,5 +25,10 @@ export class UserController {
 	@Delete(':userId')
 	async deleteAccount(@Param('userId') userId: string): Promise<boolean> {
 		return this.userService.deleteCurrentUser(userId);
+	}
+
+	@Get()
+	async listUsers(@Query() params: IUserQueryParams): Promise<{ users: User[]; nextCursor?: string; total?: number }> {
+		return this.userService.list(params);
 	}
 }

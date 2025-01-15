@@ -14,6 +14,8 @@ coverage/
 .prettierrc.js
 .prettierrc.json
 tsconfig.json
+tsconfig.build.json
+tsconfig.test.json
 jest.config.js
 rollup.config.js
 

@@ -10,11 +10,7 @@ import { ServiceDiscoveryHelper } from './helpers/service-discovery';
 import { rootServices } from './repositories/root.services';
 
 export class StackAuthModule {
-	private static readonly logger = new Logger('StackAuthModule');
-	private static readonly services = [...rootServices];
-
 	static register(options: StackAuthOptions): DynamicModule {
-		this.logger.log('Registering StackAuthModule');
 		const providers: Provider[] = [
 			ApiClientService,
 			{
@@ -29,7 +25,7 @@ export class StackAuthModule {
 				provide: StackAuthConfigRef,
 				useFactory: () => new StackAuthConfigRef(options),
 			},
-			...ServiceDiscoveryHelper.discoverServices(this.services),
+			...ServiceDiscoveryHelper.discoverServices(rootServices),
 		];
 
 		const httpModule = HttpModule.register({
@@ -46,7 +42,7 @@ export class StackAuthModule {
 			module: StackAuthModule,
 			imports: [httpModule],
 			providers,
-			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(this.services)],
+			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(rootServices)],
 			global: options.global != null ? options.global : true,
 		};
 	}
@@ -64,7 +60,7 @@ export class StackAuthModule {
 				useFactory: async (opts: StackAuthOptions) => new StackAuthConfigRef(opts),
 				inject: [STACK_AUTH_OPTIONS],
 			},
-			...ServiceDiscoveryHelper.discoverServices(this.services),
+			...ServiceDiscoveryHelper.discoverServices(rootServices),
 			...this.createAsyncProviders(options),
 		];
 
@@ -95,7 +91,7 @@ export class StackAuthModule {
 			module: StackAuthModule,
 			imports: [httpModule],
 			providers,
-			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(this.services)],
+			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(rootServices)],
 			global: options.global != null ? options.global : true,
 		};
 	}
@@ -118,16 +114,13 @@ export class StackAuthModule {
 			return {
 				provide: STACK_AUTH_OPTIONS,
 				useFactory: options.useFactory,
-				inject: options.inject,
+				inject: options.inject || [],
 			};
 		}
 
 		return {
 			provide: STACK_AUTH_OPTIONS,
 			useFactory: async (optionsFactory: StackAuthOptionsFactory): Promise<StackAuthOptions> => {
-				if (!this.isStackAuthFactory(optionsFactory)) {
-					throw new Error("Factory must be implement 'StackAuthOptionsFactory' interface.");
-				}
 				return optionsFactory.createStackAuthOptions();
 			},
 			inject: [options.useExisting || options.useClass] as Type<StackAuthOptionsFactory>[],
@@ -146,10 +139,7 @@ export class StackAuthModule {
 	private static async createOptionsFactory(options: StackAuthModuleAsyncOptions): Promise<StackAuthOptionsFactory> {
 		if (options.useExisting || options.useClass) {
 			const FactoryClass = options.useClass ?? options.useExisting;
-			if (!FactoryClass) {
-				throw new Error('FactoryClass cannot be undefined');
-			}
-			return new FactoryClass();
+			return new (FactoryClass as Type<StackAuthOptionsFactory>)();
 		}
 		throw new Error('Invalid configuration. Must provide useFactory, useClass or useExisting');
 	}
@@ -189,9 +179,5 @@ export class StackAuthModule {
 		}
 
 		return headers;
-	}
-
-	private static isStackAuthFactory(object: StackAuthOptionsFactory): object is StackAuthOptionsFactory {
-		return !!object && typeof object.createStackAuthOptions === 'function';
 	}
 }

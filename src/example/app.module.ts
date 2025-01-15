@@ -34,7 +34,7 @@ import { REQUEST } from '@nestjs/core';
 			http: true,
 		}),
 		ConfigModule.forRoot({
-			envFilePath: '.env.test',
+			envFilePath: '.env.local',
 			isGlobal: true,
 		}),
 		StackAuthModule.registerAsync({
@@ -68,7 +68,7 @@ import { REQUEST } from '@nestjs/core';
 			driver: ApolloDriver,
 			playground: true,
 			debug: true,
-			autoSchemaFile: join(process.cwd(), 'schema.graphql'),
+			autoSchemaFile: join(process.cwd(), 'src/example/graphql/schema.graphql'),
 			sortSchema: true,
 		}),
 	],

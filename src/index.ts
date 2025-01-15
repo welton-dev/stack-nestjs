@@ -12,8 +12,8 @@ export { StackAuthService } from './decorators/stack-auth-service.decorator';
 export { SetStackAuthOptions } from './decorators/set-stack-auth-options';
 
 // Interfaces de entidades
-export { User } from './entities/user.entity';
-export { Team } from './entities/team.entity';
+export { User } from './example/entities/user.entity';
+export { Team } from './example/entities/team.entity';
 
 // Interfaces de serviços
 export { StackAuthServices } from './interfaces/stack-auth-services.interface';

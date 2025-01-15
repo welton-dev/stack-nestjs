@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { createMock } from '@golevelup/ts-jest';
-import { ApiClientService } from './client';
 import { HttpService } from '@nestjs/axios';
 import { Logger } from '@nestjs/common';
 import { AxiosResponse, AxiosRequestHeaders } from 'axios';
-import { STACK_AUTH_LOGGER } from './provider.declarations';
+import { STACK_AUTH_LOGGER, STACK_AUTH_OPTIONS } from '../../provider.declarations';
 import { of } from 'rxjs';
+import { ApiClientService } from '../../services/api-client.service';
+import { StackAuthOptions } from '../../interfaces/stack-auth-options';
 
 describe('ApiClientService', () => {
 	let service: ApiClientService;
 	let httpService: HttpService;
-	let _logger: Logger;
 
 	const mockAxiosResponse = <T>(data: T): AxiosResponse<T> => ({
 		data,
@@ -34,12 +34,15 @@ describe('ApiClientService', () => {
 					provide: STACK_AUTH_LOGGER,
 					useValue: createMock<Logger>(),
 				},
+				{
+					provide: STACK_AUTH_OPTIONS,
+					useValue: createMock<StackAuthOptions>(),
+				},
 			],
 		}).compile();
 
 		service = module.get<ApiClientService>(ApiClientService);
 		httpService = module.get<HttpService>(HttpService);
-		_logger = module.get<Logger>(STACK_AUTH_LOGGER);
 	});
 
 	it('should be defined', () => {

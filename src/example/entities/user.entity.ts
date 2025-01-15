@@ -1,11 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ApiClientService } from '../services/api-client.service';
-import { ObjectMap } from '../interfaces/object-map.interface';
-import { SuccessResponse } from '../interfaces/success-response.interface';
+import { ApiClientService } from '../../services/api-client.service';
+import { ObjectMap } from '../../interfaces/object-map.interface';
+import { SuccessResponse } from '../../interfaces/success-response.interface';
+import { IUser, IUserUpdate } from '../../interfaces/user.interface';
 import { Team } from './team.entity';
 
 @ObjectType('User')
-export class User {
+export class User implements IUser {
 	@Field()
 	readonly id: string;
 
@@ -47,12 +48,16 @@ export class User {
 
 	private apiClient: ApiClientService;
 
-	constructor(data: Partial<User>) {
+	constructor(data: Partial<IUser>, apiClient?: ApiClientService) {
+		if (apiClient) {
+			this.apiClient = apiClient;
+		}
 		Object.assign(this, data);
 	}
 
-	public setApiClient(apiClient: ApiClientService): void {
+	public setApiClient(apiClient: ApiClientService): User {
 		this.apiClient = apiClient;
+		return this;
 	}
 
 	public async delete(): Promise<boolean> {
@@ -60,13 +65,13 @@ export class User {
 		return response.success;
 	}
 
-	public async update(data: Partial<User>): Promise<User> {
-		const response = await this.apiClient.patch<User>('/users/' + this.id, data);
+	public async update(data: IUserUpdate): Promise<User> {
+		const response = await this.apiClient.patch<IUser>('/users/' + this.id, data);
 		return new User(response);
 	}
 
 	public async save(): Promise<User> {
-		const response = await this.apiClient.post<User>('/users/' + this.id, this);
+		const response = await this.apiClient.post<IUser>('/users/' + this.id, this);
 		return new User(response);
 	}
 }

@@ -1,24 +1,31 @@
-import { ApiClientService } from '../services/api-client.service';
-import { type ObjectMap } from '../interfaces/object-map.interface';
-import { ITeam } from '../interfaces/team.interface';
+import { ApiClientService } from '../../services/api-client.service';
+import { type ObjectMap } from '../../interfaces/object-map.interface';
+import { ITeam, ITeamUpdate } from '../../interfaces/team.interface';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('Team')
-export class Team {
+export class Team implements ITeam {
 	@Field()
 	id: string;
+
 	@Field()
 	name: string;
+
 	@Field()
 	display_name: string;
+
 	@Field()
 	created_at_millis: number;
+
 	@Field(() => Object, { nullable: true })
 	server_metadata: ObjectMap | null;
+
 	@Field({ nullable: true })
 	profile_image_url: string | null;
+
 	@Field(() => Object, { nullable: true })
 	client_metadata: ObjectMap | null;
+
 	@Field(() => Object, { nullable: true })
 	client_read_only_metadata: ObjectMap | null;
 
@@ -30,6 +37,16 @@ export class Team {
 
 	public setApiClient(apiClient: ApiClientService): void {
 		this.apiClient = apiClient;
+	}
+
+	public async update(data: ITeamUpdate): Promise<Team> {
+		const response = await this.apiClient.patch<ITeam>('/teams/' + this.id, data);
+		return new Team(response);
+	}
+
+	public async save(): Promise<Team> {
+		const response = await this.apiClient.post<ITeam>('/teams/' + this.id, this);
+		return new Team(response);
 	}
 
 	// Métodos auxiliares
