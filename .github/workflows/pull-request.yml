@@ -1,0 +1,76 @@
+name: Pull Request Checks
+
+on:
+    pull_request:
+        branches: [main, master, develop] # Executa em PRs para estas branches
+        types: [opened, synchronize, reopened]
+
+jobs:
+    validate:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [18.x, 20.x] # Versões LTS compatíveis com NestJS
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Check code style
+              run: |
+                  npm run lint
+                  npm run format:check
+
+            - name: Run tests
+              run: npm test
+
+            - name: Build
+              run: npm run build
+
+            - name: Upload coverage reports
+              uses: codecov/codecov-action@v3
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  files: ./coverage/lcov.info
+                  flags: unittests
+                  name: codecov-umbrella
+                  fail_ci_if_error: true
+
+    security:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Run Snyk to check for vulnerabilities
+              uses: snyk/actions/node@master
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+              with:
+                  args: --severity-threshold=high
+
+    size:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18.x'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Check bundle size
+              uses: andresz1/size-limit-action@v1
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  build_script: build
