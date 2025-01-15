@@ -20,20 +20,21 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
 
             - name: Install dependencies
-              run: npm ci
+              run: yarn install --frozen-lockfile
 
             - name: Check code style
               run: |
-                  npm run lint
-                  npm run format:check
+                  yarn lint
+                  yarn format:check
 
             - name: Run tests
-              run: npm test
+              run: yarn test
 
             - name: Build
-              run: npm run build
+              run: yarn build
 
             - name: Upload coverage reports
               uses: codecov/codecov-action@v3
@@ -65,9 +66,10 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: '18.x'
+                  cache: 'yarn'
 
             - name: Install dependencies
-              run: npm ci
+              run: yarn install --frozen-lockfile
 
             - name: Check bundle size
               uses: andresz1/size-limit-action@v1
