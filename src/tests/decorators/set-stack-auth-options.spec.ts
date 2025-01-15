@@ -32,10 +32,7 @@ describe('SetStackAuthOptions', () => {
 			testMethod() {}
 		}
 
-		const metadata = Reflect.getMetadata(
-			STACK_AUTH_OPTIONS,
-			TestClass.prototype.testMethod
-		);
+		const metadata = Reflect.getMetadata(STACK_AUTH_OPTIONS, TestClass.prototype.testMethod);
 		expect(metadata).toEqual({ response: mockResponseProvider });
 	});
 });
