@@ -4,20 +4,20 @@ import { StackAuthConfig } from './stack-auth-config.interface';
 
 export type { StackAuthConfig };
 
-export enum StackAuthAccessTypes {
-	CLIENT = 'client',
-	SERVER = 'server',
+export enum LogLevel {
+	INFO = 'info',
+	WARN = 'warn',
+	ERROR = 'error',
 }
 
-export interface StackAuthModuleOptions extends HttpModuleOptions {
-	accessType: StackAuthAccessTypes;
+export interface StackAuthOptions extends HttpModuleOptions {
 	stackAuth: StackAuthConfig;
-	logger?: Logger;
+	logger?: Logger | LogLevel | boolean;
 	global?: boolean;
 }
 
 export interface StackAuthOptionsFactory {
-	createStackAuthOptions(): Promise<StackAuthModuleOptions> | StackAuthModuleOptions;
+	createStackAuthOptions(): Promise<StackAuthOptions> | StackAuthOptions;
 }
 
 export interface StackAuthModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
@@ -28,6 +28,6 @@ export interface StackAuthModuleAsyncOptions extends Pick<ModuleMetadata, 'impor
 	useFactory?: (
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		...args: any[]
-	) => Promise<Omit<StackAuthModuleOptions, 'global'>> | Omit<StackAuthModuleOptions, 'global'>;
+	) => Promise<Omit<StackAuthOptions, 'global'>> | Omit<StackAuthOptions, 'global'>;
 	global?: boolean;
 }

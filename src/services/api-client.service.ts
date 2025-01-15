@@ -2,26 +2,25 @@ import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { AxiosRequestConfig } from 'axios';
-import { STACK_AUTH_LOGGER } from './provider.declarations';
+import { STACK_AUTH_LOGGER, STACK_AUTH_OPTIONS } from '../provider.declarations';
+import { StackAuthOptions } from '../interfaces/stack-auth-options';
 
 @Injectable()
 export class ApiClientService implements OnModuleInit {
 	constructor(
 		public readonly httpService: HttpService,
 		@Inject(STACK_AUTH_LOGGER) private readonly logger: Logger,
+		@Inject(STACK_AUTH_OPTIONS) private readonly options: StackAuthOptions,
 	) {}
 
 	async onModuleInit() {
-		this.logger.log('API Client initialized');
+		await this.logger.log('API Client initialized');
 	}
 
 	async request<T>(config: AxiosRequestConfig): Promise<T> {
-		const { data, status } = await firstValueFrom(
-			this.httpService.request<T>({ ...config, validateStatus: (status) => status < 500, withCredentials: true }),
-		);
+		const { data, status } = await firstValueFrom(this.httpService.request<T>({ ...config }));
 
-		this.logger.log(`Requisição realizada: ${config.method} ${config.url}`);
-		this.logger.log(`Status da requisição: ${status}`);
+		this.logger.log(`Requisição realizada: ${config.method} ${config.url} Status: ${status}`);
 
 		return data;
 	}

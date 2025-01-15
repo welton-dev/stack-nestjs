@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ApiClientService } from '../client';
+import { ApiClientService } from '../services/api-client.service';
 import { ObjectMap } from '../interfaces/object-map.interface';
 import { SuccessResponse } from '../interfaces/success-response.interface';
 import { Team } from './team.entity';
@@ -56,12 +56,17 @@ export class User {
 	}
 
 	public async delete(): Promise<boolean> {
-		const response = await this.apiClient.delete<SuccessResponse>('/me');
+		const response = await this.apiClient.delete<SuccessResponse>('/users/' + this.id);
 		return response.success;
 	}
 
 	public async update(data: Partial<User>): Promise<User> {
-		const response = await this.apiClient.patch<User>('/me', data);
+		const response = await this.apiClient.patch<User>('/users/' + this.id, data);
+		return new User(response);
+	}
+
+	public async save(): Promise<User> {
+		const response = await this.apiClient.post<User>('/users/' + this.id, this);
 		return new User(response);
 	}
 }

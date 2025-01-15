@@ -6,12 +6,12 @@
 scalar JSON
 
 type Mutation {
-  deleteMe: Boolean!
-  updateMe(input: UpdateUserInput!): User!
+  deleteMe(userId: String!): Boolean!
+  updateMe(input: UpdateUserInput!, userId: String!): User!
 }
 
 type Query {
-  me: User!
+  me(userId: String!): User!
 }
 
 type Team {

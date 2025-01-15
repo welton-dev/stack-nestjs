@@ -8,17 +8,17 @@ export class UserResolver {
 	constructor(private readonly userService: UserService) {}
 
 	@Query(() => User)
-	async me(): Promise<User> {
-		return this.userService.getCurrentUser();
+	async me(@Args('userId') userId: string): Promise<User> {
+		return this.userService.getUser(userId);
 	}
 
 	@Mutation(() => User)
-	async updateMe(@Args('input') input: UpdateUserInput): Promise<User> {
-		return this.userService.updateUserProfile(input.displayName, input.primaryEmail);
+	async updateMe(@Args('userId') userId: string, @Args('input') input: UpdateUserInput): Promise<User> {
+		return this.userService.updateUserProfile(userId, input.displayName, input.primaryEmail);
 	}
 
 	@Mutation(() => Boolean)
-	async deleteMe(): Promise<boolean> {
-		return this.userService.deleteCurrentUser();
+	async deleteMe(@Args('userId') userId: string): Promise<boolean> {
+		return this.userService.deleteCurrentUser(userId);
 	}
 }

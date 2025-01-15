@@ -34,5 +34,3 @@ export interface RequestOptions {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type StackAuthResponseProvider = (req: any) => string | Promise<string>;
-
-export type StackAuthContextType = ContextType | 'graphql';

@@ -1,24 +1,28 @@
-import { Controller, Get, Put, Delete, Body } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../entities/user.entity';
-import { IUser } from '../interfaces/user.interface';
 
 @Controller('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Get('me')
-	async getCurrentUser(): Promise<IUser | null> {
-		return await this.userService.getCurrentUser();
+	@Get(':userId')
+	async getCurrentUser(@Param('userId') userId: string): Promise<User | null> {
+		console.log(userId);
+		return await this.userService.getUser(userId);
 	}
 
-	@Put('meupate')
-	async updateProfile(@Body('displayName') displayName: string, @Body('primaryEmail') primaryEmail: string): Promise<User> {
-		return this.userService.updateUserProfile(displayName, primaryEmail);
+	@Put(':userId')
+	async updateProfile(
+		@Param('userId') userId: string,
+		@Body('displayName') displayName: string,
+		@Body('primaryEmail') primaryEmail: string,
+	): Promise<User> {
+		return this.userService.updateUserProfile(userId, displayName, primaryEmail);
 	}
 
-	@Delete('medelete')
-	async deleteAccount(): Promise<boolean> {
-		return this.userService.deleteCurrentUser();
+	@Delete(':userId')
+	async deleteAccount(@Param('userId') userId: string): Promise<boolean> {
+		return this.userService.deleteCurrentUser(userId);
 	}
 }

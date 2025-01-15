@@ -1,14 +1,14 @@
-import { StackAuthModuleOptions } from '../interfaces/stackauth-module-option';
+import { StackAuthOptions } from '../interfaces/stack-auth-options';
 
 export class StackAuthConfigRef {
-	get valueOf(): StackAuthModuleOptions {
+	get valueOf(): StackAuthOptions {
 		return this.value;
 	}
 
-	constructor(private readonly value: StackAuthModuleOptions) {}
+	constructor(private readonly value: StackAuthOptions) {}
 
 	setAuthToken(accessToken: string): this {
-		this.value.stackAuth.baseURL = accessToken;
+		this.value.baseURL = accessToken;
 
 		return this;
 	}

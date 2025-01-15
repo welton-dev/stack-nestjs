@@ -1,40 +1,40 @@
-import { DynamicModule, Logger, Provider, Type } from '@nestjs/common';
-import { ApiClientService } from './client';
+import { type DynamicModule, Logger, type Provider, type Type } from '@nestjs/common';
+import { ApiClientService } from './services/api-client.service';
 import { HttpModule } from '@nestjs/axios';
-import { UserRepository } from './repositories/user.repository';
 import { StackAuthHeaders } from './interfaces/stack-auth-config.interface';
-import { StackAuthModuleOptions, StackAuthModuleAsyncOptions, StackAuthOptionsFactory } from './interfaces/stackauth-module-option';
+import { type StackAuthOptions, type StackAuthModuleAsyncOptions, type StackAuthOptionsFactory } from './interfaces/stack-auth-options';
 import { xor } from './helpers/xor';
 import { STACK_AUTH_LOGGER, STACK_AUTH_OPTIONS } from './provider.declarations';
 import { StackAuthConfigRef } from './models/stack-auth.config-ref';
-import { StackAuthRequestResolver } from './services/request.resolver';
-import { ConfigService } from '@nestjs/config';
-import { ConfigModule } from '@nestjs/config';
+import { ServiceDiscoveryHelper } from './helpers/service-discovery';
+import { rootServices } from './repositories/root.services';
 
 export class StackAuthModule {
 	private static readonly logger = new Logger('StackAuthModule');
+	private static readonly services = [...rootServices];
 
-	static register(options: StackAuthModuleOptions): DynamicModule {
+	static register(options: StackAuthOptions): DynamicModule {
+		this.logger.log('Registering StackAuthModule');
 		const providers: Provider[] = [
 			ApiClientService,
-			UserRepository,
-			StackAuthRequestResolver,
 			{
 				provide: STACK_AUTH_OPTIONS,
 				useValue: options,
 			},
 			{
 				provide: STACK_AUTH_LOGGER,
-				useValue: options.logger || new Logger(),
+				useValue: options.logger || new Logger('StackAuthModule'),
 			},
 			{
 				provide: StackAuthConfigRef,
 				useFactory: () => new StackAuthConfigRef(options),
 			},
+			...ServiceDiscoveryHelper.discoverServices(this.services),
 		];
 
 		const httpModule = HttpModule.register({
-			baseURL: options.stackAuth.baseURL + '/api/v1',
+			...options,
+			baseURL: options.baseURL + '/api/v1',
 			timeout: options.timeout || 5000,
 			headers: {
 				...(options.headers || {}),
@@ -46,49 +46,45 @@ export class StackAuthModule {
 			module: StackAuthModule,
 			imports: [httpModule],
 			providers,
-			exports: [ApiClientService, UserRepository, STACK_AUTH_OPTIONS],
-			global: options.global,
+			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(this.services)],
+			global: options.global != null ? options.global : true,
 		};
 	}
 
 	static registerAsync(options: StackAuthModuleAsyncOptions): DynamicModule {
 		const providers: Provider[] = [
 			ApiClientService,
-			UserRepository,
-			StackAuthRequestResolver,
 			{
 				provide: STACK_AUTH_LOGGER,
-				useFactory: async (opts: StackAuthModuleOptions) => opts.logger || new Logger(),
+				useFactory: async (opts: StackAuthOptions) => opts.logger || new Logger('StackAuthModule'),
 				inject: [STACK_AUTH_OPTIONS],
 			},
 			{
 				provide: StackAuthConfigRef,
-				useFactory: async (opts: StackAuthModuleOptions) => new StackAuthConfigRef(opts),
+				useFactory: async (opts: StackAuthOptions) => new StackAuthConfigRef(opts),
 				inject: [STACK_AUTH_OPTIONS],
 			},
+			...ServiceDiscoveryHelper.discoverServices(this.services),
 			...this.createAsyncProviders(options),
 		];
 
 		const httpModule = HttpModule.registerAsync({
-			imports: [ConfigModule],
-			inject: [StackAuthRequestResolver, ConfigService],
-			useFactory: async (requestResolver: StackAuthRequestResolver, configService: ConfigService) => {
-				const config = await this.createApiClientOptions(options, configService);
-
-				const accessToken = requestResolver.getAccessToken();
+			inject: [...(options.inject || [])],
+			useFactory: async (...args) => {
+				const config = await this.createApiClientOptions(options, ...args);
 
 				this.validateOptions(config);
 
-				// Garantir que a baseURL não termine com /
-				config.stackAuth.baseURL = config.stackAuth.baseURL.replace(/\/+$/, '');
+				// Ensure that the baseURL does not end with /
+				config.baseURL = config.baseURL?.replace(/\/+$/, '');
 
 				const httpConfig = {
+					...config,
 					timeout: config.timeout || 5000,
-					baseURL: `${config.stackAuth.baseURL}/api/v1`,
+					baseURL: `${config.baseURL}/api/v1`,
 					headers: {
 						...config.headers,
 						...StackAuthModule.createHeaders(config),
-						'X-Stack-Access-Token': accessToken,
 					},
 				};
 				return httpConfig;
@@ -97,10 +93,10 @@ export class StackAuthModule {
 
 		return {
 			module: StackAuthModule,
-			imports: [...(options.imports || []), httpModule],
+			imports: [httpModule],
 			providers,
-			exports: [ApiClientService, UserRepository, STACK_AUTH_OPTIONS, StackAuthRequestResolver],
-			global: options.global,
+			exports: [ApiClientService, STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER, ...ServiceDiscoveryHelper.getServiceTokens(this.services)],
+			global: options.global != null ? options.global : true,
 		};
 	}
 
@@ -128,7 +124,7 @@ export class StackAuthModule {
 
 		return {
 			provide: STACK_AUTH_OPTIONS,
-			useFactory: async (optionsFactory: StackAuthOptionsFactory): Promise<StackAuthModuleOptions> => {
+			useFactory: async (optionsFactory: StackAuthOptionsFactory): Promise<StackAuthOptions> => {
 				if (!this.isStackAuthFactory(optionsFactory)) {
 					throw new Error("Factory must be implement 'StackAuthOptionsFactory' interface.");
 				}
@@ -138,7 +134,7 @@ export class StackAuthModule {
 		};
 	}
 
-	private static async createApiClientOptions(options: StackAuthModuleAsyncOptions, ...args: unknown[]): Promise<StackAuthModuleOptions> {
+	private static async createApiClientOptions(options: StackAuthModuleAsyncOptions, ...args: unknown[]): Promise<StackAuthOptions> {
 		if (options.useFactory) {
 			const result = await options.useFactory(...args);
 			return result;
@@ -158,20 +154,20 @@ export class StackAuthModule {
 		throw new Error('Invalid configuration. Must provide useFactory, useClass or useExisting');
 	}
 
-	private static validateOptions(options: StackAuthModuleOptions): void | never {
+	private static validateOptions(options: StackAuthOptions): void | never {
 		if (!options.stackAuth.projectId) {
 			throw new Error('Stack auth options must be contains "projectId".');
 		}
 
-		if (!options.stackAuth.baseURL) {
+		if (!options.baseURL) {
 			throw new Error('Stack auth options must be contains "baseURL".');
 		}
 
-		if (options.accessType === 'client' && options.stackAuth.secretServerKey) {
+		if (options.stackAuth.accessType === 'client' && options.stackAuth.secretServerKey) {
 			throw new Error('Stack auth options client use "publishableClientKey" instead "secretServerKey".');
 		}
 
-		if (options.accessType === 'server' && options.stackAuth.publishableClientKey) {
+		if (options.stackAuth.accessType === 'server' && options.stackAuth.publishableClientKey) {
 			throw new Error('Stack auth options server use "secretServerKey" instead "publishableClientKey".');
 		}
 
@@ -180,13 +176,13 @@ export class StackAuthModule {
 		}
 	}
 
-	private static createHeaders(options: StackAuthModuleOptions): StackAuthHeaders {
+	private static createHeaders(options: StackAuthOptions): StackAuthHeaders {
 		const headers: StackAuthHeaders = {
-			'X-Stack-Access-Type': options.accessType,
+			'X-Stack-Access-Type': options.stackAuth.accessType,
 			'X-Stack-Project-Id': options.stackAuth.projectId,
 		};
 
-		if (options.accessType === 'client') {
+		if (options.stackAuth.accessType === 'client') {
 			headers['X-Stack-Publishable-Client-Key'] = options.stackAuth.publishableClientKey;
 		} else {
 			headers['X-Stack-Secret-Server-Key'] = options.stackAuth.secretServerKey;

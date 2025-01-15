@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		snapshot: true,
-		logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+		logger: ['error', 'warn', 'log', 'verbose'],
 	});
 
 	// Manipuladores de processo para encerramento gracioso
