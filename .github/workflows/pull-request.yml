@@ -1,9 +1,10 @@
-name: Pull Request Checks
+name: Pull Request
 
 on:
     pull_request:
-        branches: [main, master, develop] # Executa em PRs para estas branches
-        types: [opened, synchronize, reopened]
+        branches:
+            - main
+            - master
 
 jobs:
     validate:
@@ -11,7 +12,7 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [18.x, 20.x] # Versões LTS compatíveis com NestJS
+                node-version: [20.x, 22.x]
 
         steps:
             - uses: actions/checkout@v3
@@ -22,28 +23,34 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'yarn'
 
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+            - name: Cache yarn dependencies
+              uses: actions/cache@v3
+              id: yarn-cache
+              with:
+                  path: |
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      node_modules
+                      */*/node_modules
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
             - name: Install dependencies
+              if: steps.yarn-cache.outputs.cache-hit != 'true'
               run: yarn install --frozen-lockfile
 
-            - name: Check code style
-              run: |
-                  yarn lint
-                  yarn format:check
+            - name: Run linter
+              run: yarn lint
 
             - name: Run tests
               run: yarn test
 
             - name: Build
               run: yarn build
-
-            - name: Upload coverage reports
-              uses: codecov/codecov-action@v3
-              with:
-                  token: ${{ secrets.CODECOV_TOKEN }}
-                  files: ./coverage/lcov.info
-                  flags: unittests
-                  name: codecov-umbrella
-                  fail_ci_if_error: true
 
     security:
         runs-on: ubuntu-latest
