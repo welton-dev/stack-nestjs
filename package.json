@@ -1,6 +1,6 @@
 {
 	"name": "@stackauth/nestjs",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Pacote de consumo de API de autenticação para aplicativos NestJS",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
@@ -107,20 +107,31 @@
 		"registry": "https://registry.npmjs.org/"
 	},
 	"release": {
-		"branches": ["main"],
+		"branches": [
+			"main"
+		],
 		"plugins": [
 			"@semantic-release/commit-analyzer",
 			"@semantic-release/release-notes-generator",
 			"@semantic-release/changelog",
-			["@semantic-release/npm", {
-				"pkgRoot": ".",
-				"tarballDir": "dist"
-			}],
+			[
+				"@semantic-release/npm",
+				{
+					"pkgRoot": ".",
+					"tarballDir": "dist"
+				}
+			],
 			"@semantic-release/github",
-			["@semantic-release/git", {
-				"assets": ["package.json", "CHANGELOG.md"],
-				"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-			}]
+			[
+				"@semantic-release/git",
+				{
+					"assets": [
+						"package.json",
+						"CHANGELOG.md"
+					],
+					"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+				}
+			]
 		]
 	},
 	"engines": {

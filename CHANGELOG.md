@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/welton-dev/stack-nestjs/compare/v1.0.1...v1.0.2) (2025-01-16)
+
+
+### Bug Fixes
+
+* Ci and npm ([ae3a6bd](https://github.com/welton-dev/stack-nestjs/commit/ae3a6bdca55ec846ba38b607bb8c0b90e6b09d24))
+
 ## [1.0.1](https://github.com/welton-dev/stack-nestjs/compare/v1.0.0...v1.0.1) (2025-01-16)
 
 
