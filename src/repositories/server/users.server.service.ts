@@ -33,13 +33,8 @@ export class UsersServerService {
 	 *@param userId ID of the user to be deleted
 	 *@returns True if the user was deleted successfully, false otherwise
 	 */
-	async delete(userId: string): Promise<boolean> {
-		try {
-			const response = await this.apiClient.delete<SuccessResponse>(`/users/${userId}`);
-			return response.success;
-		} catch (error) {
-			throw new Error('Failed to delete user');
-		}
+	async delete(userId: string): Promise<SuccessResponse> {
+		return await this.apiClient.delete<SuccessResponse>(`/users/${userId}`);
 	}
 
 	/**
@@ -47,8 +42,9 @@ export class UsersServerService {
 	 *@param data User data to be created
 	 *@returns User created
 	 */
-	create(data: Partial<IUser>): User {
-		return new User(data, this.apiClient);
+	async create(data: Partial<Omit<IUser, 'id' | 'primary_email'>> & Pick<IUser, 'primary_email'>): Promise<User> {
+		const response = await this.apiClient.post<IUser>('/users', data);
+		return new User(response, this.apiClient);
 	}
 
 	/**
@@ -76,17 +72,12 @@ export class UsersServerService {
 	 *const { users } = await userService.list({ order_by: 'signed_up_at', desc: true });
 	 */
 	public async list(params?: IUserQueryParams): Promise<{ users: User[]; nextCursor?: string; total?: number }> {
-		try {
-			const response = await this.apiClient.get<IUserListResponse>('/users', { params });
+		const response = await this.apiClient.get<IUserListResponse>('/users', { params });
 
-			return {
-				users: response.users.map((user) => new User(user).setApiClient(this.apiClient)),
-				nextCursor: response.next_cursor,
-				total: response.total,
-			};
-		} catch (error) {
-			this.logger.error('Erro ao listar usuários:', error);
-			throw error;
-		}
+		return {
+			users: response.users.map((user) => new User(user).setApiClient(this.apiClient)),
+			nextCursor: response.next_cursor,
+			total: response.total,
+		};
 	}
 }

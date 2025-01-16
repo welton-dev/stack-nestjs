@@ -29,11 +29,15 @@ export class UserService {
 	}
 
 	async deleteCurrentUser(userId: string): Promise<boolean> {
-		return this.usersRepository.delete(userId);
+		return this.usersRepository
+			.delete(userId)
+			.then((response) => response.success)
+			.catch(() => false);
 	}
 
 	async create(data: Partial<User>): Promise<User> {
-		return this.usersRepository.create(data);
+		const { primary_email } = data;
+		return this.usersRepository.create({ ...data, primary_email });
 	}
 
 	async list(params?: IUserQueryParams): Promise<{ users: User[]; nextCursor?: string; total?: number }> {

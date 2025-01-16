@@ -7,8 +7,6 @@ import { User } from '../../../models/user.model';
 import { IUser } from '../../../interfaces/user.interface';
 import { createMock } from '@golevelup/ts-jest';
 
-jest.mock('../../../services/api-client.service');
-
 describe('UsersServerService', () => {
 	let service: UsersServerService;
 	let apiClient: jest.Mocked<ApiClientService>;
@@ -78,24 +76,21 @@ describe('UsersServerService', () => {
 
 			const result = await service.delete('123');
 
-			expect(result).toBe(true);
+			expect(result).toBeInstanceOf(Object);
+			expect(result.success).toBe(true);
 			expect(apiClient.delete).toHaveBeenCalledWith('/users/123');
-		});
-
-		it('should throw error when delete fails', async () => {
-			apiClient.delete.mockRejectedValue(new Error('API Error'));
-
-			await expect(service.delete('123')).rejects.toThrow('Failed to delete user');
 		});
 	});
 
 	describe('create', () => {
-		it('should create new user instance', () => {
-			const userData = { display_name: 'New User' };
-			const result = service.create(userData);
+		it('should create new user instance', async () => {
+			apiClient.post.mockResolvedValue({ ...mockUser, display_name: 'New User', primary_email: 'new@example.com' });
+			const userData = { display_name: 'New User', primary_email: 'new@example.com' };
+			const result = await service.create(userData);
 
 			expect(result).toBeInstanceOf(User);
 			expect(result.display_name).toBe(userData.display_name);
+			expect(result.primary_email).toBe(userData.primary_email);
 		});
 	});
 
