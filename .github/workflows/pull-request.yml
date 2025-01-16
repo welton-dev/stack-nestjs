@@ -95,7 +95,9 @@ jobs:
                   cache: 'yarn'
 
             - name: Install dependencies
-              run: yarn install --frozen-lockfile
+              run: |
+                  yarn install --frozen-lockfile
+                  yarn add -D @size-limit/preset-small-lib
 
             - name: Build
               run: yarn build
@@ -104,4 +106,4 @@ jobs:
               uses: andresz1/size-limit-action@v1
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  skip_step: install # já instalamos as dependências acima
+                  skip_step: install
