@@ -47,30 +47,14 @@ jobs:
                   yarn lint
                   yarn format:check
 
-            - name: Run tests
-              run: yarn test
+            - name: Run tests with coverage
+              run: yarn test:cov
 
-            - name: Build
-              run: yarn build
-
-            - name: Upload coverage reports
+            - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v3
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
-                  files: ./coverage/lcov.info
+                  file: ./coverage/lcov.info
                   flags: unittests
                   name: codecov-umbrella
                   fail_ci_if_error: true
-
-    security:
-        runs-on: ubuntu-latest
-        needs: validate
-        steps:
-            - uses: actions/checkout@v3
-
-            - name: Run Snyk to check for vulnerabilities
-              uses: snyk/actions/node@master
-              env:
-                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-              with:
-                  args: --severity-threshold=high

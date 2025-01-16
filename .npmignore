@@ -1,6 +1,7 @@
 # Arquivos de desenvolvimento
 src/
 tests/
+example/
 coverage/
 .vscode/
 .github/
@@ -49,20 +50,3 @@ tmp/
 
 # Arquivos de dependências
 node_modules/
-
-# Arquivos de build
-build/
-dist/
-
-# Arquivos de CI/CD
-.travis.yml
-.circleci/
-.gitlab-ci.yml
-
-# Outros
-*.tgz
-.editorconfig
-.gitignore
-.npmrc
-.yarnrc
-*.tsbuildinfo

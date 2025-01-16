@@ -20,6 +20,7 @@ module.exports = {
 		'!src/**/*.test.ts'
 	],
 	coverageDirectory: 'coverage',
+	coverageReporters: ['lcov', 'text', 'text-summary'],
 	testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
 	verbose: true,
 	testPathIgnorePatterns: ['/node_modules/', '/dist/', '/src/example/'],

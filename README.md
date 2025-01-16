@@ -1,59 +1,202 @@
-[![Pull Request Checks](https://github.com/{seu-usuario}/{seu-repo}/actions/workflows/pull-request.yml/badge.svg)](https://github.com/{seu-usuario}/{seu-repo}/actions/workflows/pull-request.yml)
-[![codecov](https://codecov.io/gh/{seu-usuario}/{seu-repo}/branch/main/graph/badge.svg)](https://codecov.io/gh/{seu-usuario}/{seu-repo})
-[![Known Vulnerabilities](https://snyk.io/test/github/{seu-usuario}/{seu-repo}/badge.svg)](https://snyk.io/test/github/{seu-usuario}/{seu-repo})
+# Stack Auth NestJS Module
 
-# My API Consumer Client
-
-Módulo NestJS para consumo de API externa.
+Módulo NestJS para autenticação e gerenciamento de usuários usando Stack Auth.
 
 ## Instalação
 
 ```bash
-yarn add my-api-consumer-client
+yarn add @stack-auth/nestjs
 ```
 
-## Uso
+## Configuração
+
+### 1. Configurar Módulo
 
 ```typescript
 // app.module.ts
 import { Module } from '@nestjs/common';
-import { ApiClientModule } from 'my-api-consumer-client';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { StackAuthModule } from '@stack-auth/nestjs';
 
 @Module({
 	imports: [
-		ApiClientModule.register({
-			baseURL: 'https://api.exemplo.com',
-			apiKey: 'seu-api-key',
+		ConfigModule.forRoot(),
+		StackAuthModule.registerAsync({
+			inject: [ConfigService],
+			useFactory: async (configService: ConfigService) => ({
+				baseURL: configService.getOrThrow('STACKAUTH_BASE_URL'),
+				stackAuth: {
+					projectId: configService.getOrThrow('STACKAUTH_PROJECT_ID'),
+					accessType: configService.getOrThrow('STACKAUTH_ACCESS_TYPE'),
+					// Para modo cliente
+					publishableClientKey: configService.get('STACKAUTH_PUBLISHABLE_CLIENT_KEY'),
+					// Para modo servidor
+					secretServerKey: configService.get('STACKAUTH_SECRET_SERVER_KEY'),
+				},
+			}),
 		}),
 	],
 })
 export class AppModule {}
+```
 
-// seu-servico.service.ts
+### 2. Variáveis de Ambiente
+
+```env
+# .env
+STACKAUTH_BASE_URL=https://api.stackauth.com
+STACKAUTH_PROJECT_ID=seu-project-id
+STACKAUTH_ACCESS_TYPE=server # ou client
+STACKAUTH_SECRET_SERVER_KEY=sk_test_123 # apenas para modo servidor
+STACKAUTH_PUBLISHABLE_CLIENT_KEY=pk_test_123 # apenas para modo cliente
+```
+
+## Uso
+
+### 1. Criando um Serviço de Usuários
+
+```typescript
+// users.service.ts
 import { Injectable } from '@nestjs/common';
-import { ApiClientService } from 'my-api-consumer-client';
+import { InjectStackAuthRepository } from '@stack-auth/nestjs';
+import { User } from '@stack-auth/nestjs/models';
 
 @Injectable()
-export class SeuServico {
-	constructor(private readonly apiClient: ApiClientService) {}
+export class UsersService {
+	constructor(
+		@InjectStackAuthRepository('server.users')
+		private readonly usersRepo: UsersServerService,
+	) {}
 
-	async buscarDados() {
-		try {
-			const response = await this.apiClient.getData();
-			return response;
-		} catch (error) {
-			throw error;
-		}
+	// Buscar e atualizar usuário
+	async getUser(userId: string): Promise<User> {
+		const user = await this.usersRepo.getUser(userId);
+		return user.update({
+			display_name: 'Novo Nome',
+			primary_email_auth_enabled: false,
+		});
+	}
+
+	// Atualizar perfil
+	async updateProfile(userId: string, displayName: string, email: string): Promise<User> {
+		const user = await this.usersRepo.getUser(userId);
+		return user.update({
+			display_name: displayName,
+			primary_email: email,
+		});
+	}
+
+	// Criar usuário
+	async createUser(data: { primary_email: string; display_name?: string }): Promise<User> {
+		return this.usersRepo.create(data);
+	}
+
+	// Listar usuários
+	async listUsers(params?: { limit?: number; cursor?: string; query?: string; team_id?: string; order_by?: string; desc?: boolean }) {
+		return this.usersRepo.list(params);
+	}
+
+	// Deletar usuário
+	async deleteUser(userId: string): Promise<boolean> {
+		return this.usersRepo
+			.delete(userId)
+			.then((response) => response.success)
+			.catch(() => false);
 	}
 }
 ```
 
-## Scripts Disponíveis
+### 2. Usando com GraphQL
 
-- `yarn build`: Compila o projeto
-- `yarn lint`: Executa o ESLint
-- `yarn format`: Formata o código com Prettier
-- `yarn test`: Executa os testes
+```typescript
+// users.resolver.ts
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { InjectStackAuthRepository } from '@stack-auth/nestjs';
+import { User } from './entities/user.entity';
+
+@Resolver(() => User)
+export class UsersResolver {
+	constructor(
+		@InjectStackAuthRepository('server.users')
+		private readonly usersRepo: UsersServerService,
+	) {}
+
+	@Query(() => User)
+	async user(@Args('id') id: string) {
+		return this.usersRepo.getUser(id);
+	}
+
+	@Mutation(() => User)
+	async updateUser(@Args('id') id: string, @Args('input') input: UpdateUserInput) {
+		const user = await this.usersRepo.getUser(id);
+		return user.update(input);
+	}
+}
+```
+
+### 3. Usando com REST
+
+```typescript
+// users.controller.ts
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { InjectStackAuthRepository } from '@stack-auth/nestjs';
+
+@Controller('users')
+export class UsersController {
+	constructor(
+		@InjectStackAuthRepository('server.users')
+		private readonly usersRepo: UsersServerService,
+	) {}
+
+	@Get(':id')
+	async getUser(@Param('id') id: string) {
+		return this.usersRepo.getUser(id);
+	}
+
+	@Post()
+	async createUser(@Body() data: CreateUserDto) {
+		return this.usersRepo.create(data);
+	}
+}
+```
+
+## Repositories Disponíveis
+
+| Nome     | Modo   | Injeção                                         |
+| -------- | ------ | ----------------------------------------------- |
+| Users    | Server | `@InjectStackAuthRepository('server.users')`    |
+| Users    | Client | `@InjectStackAuthRepository('client.users')`    |
+| Sessions | Server | `@InjectStackAuthRepository('server.sessions')` |
+
+## Testes
+
+Para testar sua aplicação com o módulo:
+
+```typescript
+describe('AppModule', () => {
+	let module: TestingModule;
+
+	beforeEach(async () => {
+		module = await Test.createTestingModule({
+			imports: [
+				StackAuthModule.register({
+					baseURL: 'http://test.com',
+					stackAuth: {
+						projectId: 'test-project',
+						accessType: 'server',
+						secretServerKey: 'sk_test_123',
+					},
+				}),
+			],
+		}).compile();
+	});
+
+	it('should be defined', () => {
+		expect(module.get(ApiClientService)).toBeDefined();
+		expect(module.get(UsersServerService)).toBeDefined();
+	});
+});
+```
 
 ## Licença
 
