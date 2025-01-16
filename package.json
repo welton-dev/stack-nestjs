@@ -115,11 +115,6 @@
 			"limit": "50 kB"
 		},
 		{
-			"name": "source",
-			"path": "dist/**/*.map",
-			"limit": "50 kB"
-		},
-		{
 			"name": "types",
 			"path": "dist/**/*.d.ts",
 			"limit": "50 kB"
