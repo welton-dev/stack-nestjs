@@ -7,7 +7,8 @@ on:
             - develop
             - beta
             - alpha
-
+permissions:
+    pull-requests: write
 jobs:
     validate:
         runs-on: ubuntu-latest
@@ -95,15 +96,12 @@ jobs:
                   cache: 'yarn'
 
             - name: Install dependencies
-              run: |
-                  yarn install --frozen-lockfile
-                  yarn add -D @size-limit/preset-small-lib
+              run: yarn install --frozen-lockfile
 
             - name: Build
               run: yarn build
 
-            - name: Check bundle size
-              uses: andresz1/size-limit-action@v1
+            - uses: andresz1/size-limit-action@v1
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   skip_step: install
