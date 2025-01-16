@@ -57,34 +57,3 @@ jobs:
                   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
               with:
                   args: --severity-threshold=high
-
-    deploy:
-        runs-on: ubuntu-latest
-        needs: [validate, security]
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' # Só executa na main/master
-        steps:
-            - uses: actions/checkout@v3
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-
-            - name: Install dependencies
-              run: yarn install --frozen-lockfile
-
-            - name: Build
-              run: yarn build
-
-            - name: Create GitHub Release
-              uses: actions/create-release@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  tag_name: v${{ github.run_number }}
-                  release_name: Release v${{ github.run_number }}
-                  body: |
-                      Automated release for commit ${{ github.sha }}
-                  draft: false
-                  prerelease: false
