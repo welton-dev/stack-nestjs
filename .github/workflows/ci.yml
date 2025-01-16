@@ -51,10 +51,9 @@ jobs:
               run: yarn test:cov
 
             - name: Upload coverage to Codecov
-              uses: codecov/codecov-action@v3
+              uses: codecov/codecov-action@v5
+              continue-on-error: true
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
-                  file: ./coverage/lcov.info
-                  flags: unittests
-                  name: codecov-umbrella
-                  fail_ci_if_error: true
+                  slug: welton-dev/stack-nestjs
+                  fail_ci_if_error: false # Não falha o CI se o upload falhar
