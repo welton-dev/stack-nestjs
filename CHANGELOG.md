@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/welton-dev/stack-nestjs/compare/v1.0.2...v1.1.0) (2025-01-16)
+
+
+### Features
+
+* add badges and language. ([020c385](https://github.com/welton-dev/stack-nestjs/commit/020c3852a659470454bb01f4e372314c38619b71))
+
 ## [1.0.2](https://github.com/welton-dev/stack-nestjs/compare/v1.0.1...v1.0.2) (2025-01-16)
 
 
