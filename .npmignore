@@ -1,6 +1,7 @@
 # Arquivos de desenvolvimento
 src/
 tests/
+nest/
 example/
 coverage/
 .vscode/

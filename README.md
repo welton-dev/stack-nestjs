@@ -184,42 +184,70 @@ export class UsersController {
 | -------- | ----------------------------------------------- |
 | Users    | `@InjectStackAuthRepository('client.users')`    |
 
-## Testing
+## Workflow and Versioning
 
-To test your application with the module:
+The project uses a branch-based workflow to ensure quality and stability:
 
-```typescript
-describe('AppModule', () => {
-	let module: TestingModule;
-
-	beforeEach(async () => {
-		module = await Test.createTestingModule({
-			imports: [
-				StackAuthModule.register({
-					baseURL: 'http://test.com',
-					stackAuth: {
-						projectId: 'test-project',
-						accessType: 'server',
-						secretServerKey: 'sk_test_123',
-					},
-				}),
-			],
-		}).compile();
-	});
-
-	it('should be defined', () => {
-		expect(module).toBeDefined();
-	});
-});
+```
+alpha -> beta -> develop -> main
+  ↑       ↑        ↑         ↑
+  |       |        |         |
+  |       |        |    (production)
+  |       |        |
+  |       |    (pre-release)
+  |       |
+  |   (beta testing)
+  |
+(initial development)
 ```
 
-## Semantic Versioning
+### Branches
+
+- `alpha`: Initial feature development
+- `beta`: Testing and validation version
+- `develop`: Pre-release version with tested features
+- `main`: Stable production version
+
+### NPM Tags
+
+Each branch has its own NPM tag:
+
+```bash
+# Stable version (main)
+npm install @stackauth/nestjs@latest
+
+# Pre-release version (develop)
+npm install @stackauth/nestjs@next
+
+# Beta version (beta)
+npm install @stackauth/nestjs@beta
+
+# Alpha version (alpha)
+npm install @stackauth/nestjs@alpha
+```
+
+### Development Flow
+
+1. New features start in the `alpha` branch
+2. After initial development, merge to `beta` via PR
+3. After testing and validation, merge to `develop` via PR
+4. When ready for production, merge to `main` via PR
+
+### Semantic Versioning
 
 This project follows [Semantic Versioning](https://semver.org/) using [Semantic Release](https://semantic-release.gitbook.io/). The version numbers are automatically managed based on commit messages.
 
-### Commit Message Format
+#### Version Numbers
 
-Each commit message consists of a **header**, a **body** and a **footer**. The header has a special format that includes a **type**, a **scope** and a **subject**:
+Each merge in any branch automatically generates a new version with the appropriate prefix:
+- `alpha`: `1.0.0-alpha.1`
+- `beta`: `1.0.0-beta.1`
+- `develop`: `1.0.0-develop.1`
+- `main`: `1.0.0`
+
+#### Commit Message Format
+
+Each commit message consists of a **header**, a **body** and a **footer**:
 
 ```
 <type>(<scope>): <subject>
@@ -281,6 +309,35 @@ Users need to migrate to OAuth2."
 git commit -m "docs: update API documentation"
 git commit -m "style: format code according to new rules"
 git commit -m "test: add unit tests for user service"
+```
+
+## Testing
+
+To test your application with the module:
+
+```typescript
+describe('AppModule', () => {
+	let module: TestingModule;
+
+	beforeEach(async () => {
+		module = await Test.createTestingModule({
+			imports: [
+				StackAuthModule.register({
+					baseURL: 'http://test.com',
+					stackAuth: {
+						projectId: 'test-project',
+						accessType: 'server',
+						secretServerKey: 'sk_test_123',
+					},
+				}),
+			],
+		}).compile();
+	});
+
+	it('should be defined', () => {
+		expect(module).toBeDefined();
+	});
+});
 ```
 
 ## License
