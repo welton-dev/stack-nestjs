@@ -1,0 +1,54 @@
+name: Update Branch Chain
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+            - beta
+            - alpha
+
+jobs:
+    update-branches:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Configure Git
+              run: |
+                  git config --global user.name 'GitHub Action'
+                  git config --global user.email 'action@github.com'
+
+            - name: Update Branches
+              run: |
+                  # Se o push foi no main
+                  if [[ "${GITHUB_REF#refs/heads/}" == "main" ]]; then
+                    git checkout develop
+                    git merge origin/main
+                    git push origin develop
+
+                    git checkout beta
+                    git merge origin/develop
+                    git push origin beta
+
+                    git checkout alpha
+                    git merge origin/beta
+                    git push origin alpha
+
+                  # Se o push foi no develop
+                  elif [[ "${GITHUB_REF#refs/heads/}" == "develop" ]]; then
+                    git checkout beta
+                    git merge origin/develop
+                    git push origin beta
+
+                    git checkout alpha
+                    git merge origin/beta
+                    git push origin alpha
+
+                  # Se o push foi no beta
+                  elif [[ "${GITHUB_REF#refs/heads/}" == "beta" ]]; then
+                    git checkout alpha
+                    git merge origin/beta
+                    git push origin alpha
+                  fi
