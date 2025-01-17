@@ -1,5 +1,25 @@
 {
-	"branches": ["main"],
+	"branches": [
+		{
+			"name": "main",
+			"channel": "latest"
+		},
+		{
+			"name": "develop",
+			"channel": "next",
+			"prerelease": "develop"
+		},
+		{
+			"name": "beta",
+			"channel": "beta",
+			"prerelease": "beta"
+		},
+		{
+			"name": "alpha",
+			"channel": "alpha",
+			"prerelease": "alpha"
+		}
+	],
 	"plugins": [
 		["@semantic-release/commit-analyzer", {
 			"preset": "angular",
@@ -21,12 +41,18 @@
 		"@semantic-release/changelog",
 		["@semantic-release/npm", {
 			"pkgRoot": ".",
-			"tarballDir": "dist"
+			"tarballDir": "dist",
+			"npmPublish": true
 		}],
 		["@semantic-release/git", {
 			"assets": ["package.json", "CHANGELOG.md"],
 			"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
 		}],
-		"@semantic-release/github"
+		["@semantic-release/github", {
+			"successComment": false,
+			"failTitle": false,
+			"releasedLabels": false,
+			"addReleases": "bottom"
+		}]
 	]
 }

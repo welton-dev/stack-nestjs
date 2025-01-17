@@ -6,7 +6,7 @@
 			"type": "application",
 			"entryFile": "example/main",
 			"compilerOptions": {
-				"tsConfigPath": "src/example/tsconfig.json",
+				"tsConfigPath": "example/tsconfig.json",
 				"webpack": false,
 				"manualRestart": true,
 				"deleteOutDir": true,
