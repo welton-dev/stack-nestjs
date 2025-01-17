@@ -1,0 +1,46 @@
+# Proprietários padrão para todo o repositório
+*                    @weltongbi
+
+# Código fonte principal
+/src/                @weltongbi
+/src/decorators/     @weltongbi
+/src/helpers/        @weltongbi
+/src/interfaces/     @weltongbi
+/src/models/         @weltongbi
+/src/repositories/   @weltongbi
+/src/services/       @weltongbi
+
+# Exemplos e documentação
+/example/            @weltongbi
+*.md                 @weltongbi
+/docs/               @weltongbi
+
+# Testes
+/tests/              @weltongbi
+*.spec.ts            @weltongbi
+*.test.ts            @weltongbi
+
+# Configurações do projeto
+*.json               @weltongbi
+*.js                 @weltongbi
+*.ts                 @weltongbi
+/tsconfig*.json      @weltongbi
+/.eslintrc.js        @weltongbi
+/.prettierrc         @weltongbi
+/nest-cli.json       @weltongbi
+/jest.config.js      @weltongbi
+
+# Dependências
+package.json         @weltongbi
+yarn.lock            @weltongbi
+
+# CI/CD e GitHub
+/.github/            @weltongbi
+/.github/workflows/  @weltongbi
+
+# Variáveis de ambiente
+.env*                @weltongbi
+
+# Configurações de build
+/dist/               @weltongbi
+/coverage/           @weltongbi
