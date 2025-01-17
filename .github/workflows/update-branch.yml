@@ -11,44 +11,48 @@ on:
 jobs:
     update-branches:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Configure Git
               run: |
-                  git config --global user.name 'GitHub Action'
-                  git config --global user.email 'action@github.com'
+                  git config --global user.name 'Stack NestJS Bot'
+                  git config --global user.email 'bot@noreply.github.com'
 
             - name: Update Branches
               run: |
                   # Se o push foi no main
                   if [[ "${GITHUB_REF#refs/heads/}" == "main" ]]; then
                     git checkout develop
-                    git merge origin/main
+                    git merge origin/main --no-edit
                     git push origin develop
 
                     git checkout beta
-                    git merge origin/develop
+                    git merge origin/develop --no-edit
                     git push origin beta
 
                     git checkout alpha
-                    git merge origin/beta
+                    git merge origin/beta --no-edit
                     git push origin alpha
 
                   # Se o push foi no develop
                   elif [[ "${GITHUB_REF#refs/heads/}" == "develop" ]]; then
                     git checkout beta
-                    git merge origin/develop
+                    git merge origin/develop --no-edit
                     git push origin beta
 
                     git checkout alpha
-                    git merge origin/beta
+                    git merge origin/beta --no-edit
                     git push origin alpha
 
                   # Se o push foi no beta
                   elif [[ "${GITHUB_REF#refs/heads/}" == "beta" ]]; then
                     git checkout alpha
-                    git merge origin/beta
+                    git merge origin/beta --no-edit
                     git push origin alpha
                   fi
