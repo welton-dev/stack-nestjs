@@ -1,8 +1,8 @@
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
-import { StackAuthModule } from '../stack-auth.module';
-import { StackAuthAccessTypes } from '../interfaces/stack-auth-config.interface';
+import { StackAuthModule } from '../src/stack-auth.module';
+import { StackAuthAccessTypes } from '../src/interfaces/stack-auth-config.interface';
 import { UserModule } from './user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -68,7 +68,7 @@ import { REQUEST } from '@nestjs/core';
 			driver: ApolloDriver,
 			playground: true,
 			debug: true,
-			autoSchemaFile: join(process.cwd(), 'src/example/graphql/schema.graphql'),
+			autoSchemaFile: join(process.cwd(), 'example/graphql/schema.graphql'),
 			sortSchema: true,
 		}),
 	],

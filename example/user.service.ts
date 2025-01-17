@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { InjectStackAuthRepository } from '../decorators/inject-stack-auth.decorator';
+import { InjectStackAuthRepository } from '../src/decorators/inject-stack-auth.decorator';
 
-import { UsersServerService } from '../repositories/server/users.server.service';
-import { IUserQueryParams } from '../interfaces/user.interface';
-import { User } from '../models/user.model';
+import { UsersServerService } from '../src/repositories/server/users.server.service';
+import { IUserQueryParams } from '../src/interfaces/user.interface';
+import { User } from '../src/models/user.model';
 
 @Injectable()
 export class UserService {

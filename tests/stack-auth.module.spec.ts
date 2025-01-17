@@ -1,11 +1,11 @@
 import { Test } from '@nestjs/testing';
-import { StackAuthModule } from '../stack-auth.module';
-import { ApiClientService } from '../services/api-client.service';
-import { STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER } from '../provider.declarations';
-import { StackAuthConfigRef } from '../models/stack-auth.config-ref';
+import { StackAuthModule } from '../src/stack-auth.module';
+import { ApiClientService } from '../src/services/api-client.service';
+import { STACK_AUTH_OPTIONS, STACK_AUTH_LOGGER } from '../src/provider.declarations';
+import { StackAuthConfigRef } from '../src/models/stack-auth.config-ref';
 import { Logger } from '@nestjs/common';
-import { StackAuthOptions, StackAuthOptionsFactory } from '../interfaces/stack-auth-options';
-import { StackAuthAccessTypes } from '../interfaces/stack-auth-config.interface';
+import { StackAuthOptions, StackAuthOptionsFactory } from '../src/interfaces/stack-auth-options';
+import { StackAuthAccessTypes } from '../src/interfaces/stack-auth-config.interface';
 import { createMock } from '@golevelup/ts-jest';
 import { Injectable } from '@nestjs/common';
 import { Module } from '@nestjs/common';

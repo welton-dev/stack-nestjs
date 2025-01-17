@@ -1,6 +1,6 @@
-import { ServiceDiscoveryHelper } from '../../helpers/service-discovery';
-import { STACK_AUTH_SERVICE } from '../../provider.declarations';
-import { STACK_AUTH_SERVICE_METADATA } from '../../decorators/stack-auth-service.decorator';
+import { ServiceDiscoveryHelper } from '../../src/helpers/service-discovery';
+import { STACK_AUTH_SERVICE } from '../../src/provider.declarations';
+import { STACK_AUTH_SERVICE_METADATA } from '../../src/decorators/stack-auth-service.decorator';
 
 describe('ServiceDiscoveryHelper', () => {
 	class TestService1 {}

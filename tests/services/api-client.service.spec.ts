@@ -3,10 +3,10 @@ import { createMock } from '@golevelup/ts-jest';
 import { HttpService } from '@nestjs/axios';
 import { Logger } from '@nestjs/common';
 import { AxiosResponse, AxiosRequestHeaders } from 'axios';
-import { STACK_AUTH_LOGGER, STACK_AUTH_OPTIONS } from '../../provider.declarations';
+import { STACK_AUTH_LOGGER, STACK_AUTH_OPTIONS } from '../../src/provider.declarations';
 import { of } from 'rxjs';
-import { ApiClientService } from '../../services/api-client.service';
-import { StackAuthOptions } from '../../interfaces/stack-auth-options';
+import { ApiClientService } from '../../src/services/api-client.service';
+import { StackAuthOptions } from '../../src/interfaces/stack-auth-options';
 
 describe('ApiClientService', () => {
 	let service: ApiClientService;

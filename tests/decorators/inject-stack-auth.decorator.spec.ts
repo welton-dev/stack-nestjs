@@ -1,5 +1,5 @@
-import { InjectStackAuthRepository } from '../../decorators/inject-stack-auth.decorator';
-import { STACK_AUTH_SERVICE } from '../../provider.declarations';
+import { InjectStackAuthRepository } from '../../src/decorators/inject-stack-auth.decorator';
+import { STACK_AUTH_SERVICE } from '../../src/provider.declarations';
 
 describe('InjectStackAuthRepository', () => {
 	class TestService {}

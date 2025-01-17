@@ -1,6 +1,6 @@
-import { StackAuthConfigRef } from '../../models/stack-auth.config-ref';
-import { StackAuthAccessTypes } from '../../interfaces/stack-auth-config.interface';
-import { StackAuthOptions } from '../../interfaces/stack-auth-options';
+import { StackAuthConfigRef } from '../../src/models/stack-auth.config-ref';
+import { StackAuthAccessTypes } from '../../src/interfaces/stack-auth-config.interface';
+import { StackAuthOptions } from '../../src/interfaces/stack-auth-options';
 
 describe('StackAuthConfigRef', () => {
 	let config: StackAuthConfigRef;

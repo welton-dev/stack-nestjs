@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Logger } from '@nestjs/common';
-import { UsersServerService } from '../../../repositories/server/users.server.service';
-import { ApiClientService } from '../../../services/api-client.service';
-import { STACK_AUTH_LOGGER } from '../../../provider.declarations';
-import { User } from '../../../models/user.model';
-import { IUser } from '../../../interfaces/user.interface';
+import { UsersServerService } from '../../../src/repositories/server/users.server.service';
+import { ApiClientService } from '../../../src/services/api-client.service';
+import { STACK_AUTH_LOGGER } from '../../../src/provider.declarations';
+import { User } from '../../../src/models/user.model';
+import { IUser } from '../../../src/interfaces/user.interface';
 import { createMock } from '@golevelup/ts-jest';
 
 describe('UsersServerService', () => {

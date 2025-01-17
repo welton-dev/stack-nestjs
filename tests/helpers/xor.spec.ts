@@ -1,4 +1,4 @@
-import { xor } from '../../helpers/xor';
+import { xor } from '../../src/helpers/xor';
 
 describe('xor', () => {
 	it('should return true when exactly one argument is true', () => {

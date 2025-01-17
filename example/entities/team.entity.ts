@@ -1,6 +1,6 @@
-import { ApiClientService } from '../../services/api-client.service';
-import { type ObjectMap } from '../../interfaces/object-map.interface';
-import { ITeam, ITeamUpdate } from '../../interfaces/team.interface';
+import { ApiClientService } from '../../src/services/api-client.service';
+import { type ObjectMap } from '../../src/interfaces/object-map.interface';
+import { ITeam, ITeamUpdate } from '../../src/interfaces/team.interface';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('Team')

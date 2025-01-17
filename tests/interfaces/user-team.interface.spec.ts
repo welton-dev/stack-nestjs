@@ -1,6 +1,6 @@
-import { IUser, IUserCreate, IUserUpdate, IUserQueryParams } from '../../interfaces/user.interface';
-import { ITeam, ITeamCreate, ITeamUpdate } from '../../interfaces/team.interface';
-import { ObjectMap } from '../../interfaces/object-map.interface';
+import { IUser, IUserCreate, IUserUpdate, IUserQueryParams } from '../../src/interfaces/user.interface';
+import { ITeam, ITeamCreate, ITeamUpdate } from '../../src/interfaces/team.interface';
+import { ObjectMap } from '../../src/interfaces/object-map.interface';
 
 describe('User and Team Interfaces', () => {
 	describe('IUser', () => {

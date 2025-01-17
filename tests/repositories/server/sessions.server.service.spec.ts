@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ApiClientService } from '../../../services/api-client.service';
-import { SessionsServerService } from '../../../repositories/server/sessions.server.service';
-import { STACK_AUTH_LOGGER } from '../../../provider.declarations';
+import { ApiClientService } from '../../../src/services/api-client.service';
+import { SessionsServerService } from '../../../src/repositories/server/sessions.server.service';
+import { STACK_AUTH_LOGGER } from '../../../src/provider.declarations';
 import { createMock } from '@golevelup/ts-jest';
 
 describe('SessionsServerService', () => {

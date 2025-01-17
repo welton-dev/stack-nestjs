@@ -1,7 +1,7 @@
-import { SetStackAuthOptions } from '../../decorators/set-stack-auth-options';
-import { STACK_AUTH_OPTIONS } from '../../provider.declarations';
-import { StackAuthDecoratorOptions } from '../../interfaces/stack-auth-decorator-options';
-import { StackAuthResponseProvider } from '../../types';
+import { SetStackAuthOptions } from '../../src/decorators/set-stack-auth-options';
+import { STACK_AUTH_OPTIONS } from '../../src/provider.declarations';
+import { StackAuthDecoratorOptions } from '../../src/interfaces/stack-auth-decorator-options';
+import { StackAuthResponseProvider } from '../../src/types';
 
 describe('SetStackAuthOptions', () => {
 	const mockResponseProvider: StackAuthResponseProvider = async () => 'token';

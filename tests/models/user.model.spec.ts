@@ -1,12 +1,12 @@
-import { User } from '../../models/user.model';
-import { ApiClientService } from '../../services/api-client.service';
-import { IUser } from '../../interfaces/user.interface';
+import { User } from '../../src/models/user.model';
+import { ApiClientService } from '../../src/services/api-client.service';
+import { IUser } from '../../src/interfaces/user.interface';
 import { HttpService } from '@nestjs/axios';
 import { Logger } from '@nestjs/common';
-import { StackAuthAccessTypes } from '../../interfaces/stack-auth-config.interface';
+import { StackAuthAccessTypes } from '../../src/interfaces/stack-auth-config.interface';
 import { createMock } from '@golevelup/ts-jest';
 
-jest.mock('../../services/api-client.service');
+jest.mock('../../src/services/api-client.service');
 
 describe('User', () => {
 	let user: User;

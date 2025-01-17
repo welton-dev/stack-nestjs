@@ -1,4 +1,4 @@
-import { STACK_AUTH_SERVICE_METADATA, StackAuthService } from '../../decorators/stack-auth-service.decorator';
+import { STACK_AUTH_SERVICE_METADATA, StackAuthService } from '../../src/decorators/stack-auth-service.decorator';
 import { Reflector } from '@nestjs/core';
 
 describe('StackAuthService', () => {

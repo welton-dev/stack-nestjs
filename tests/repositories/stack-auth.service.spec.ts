@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DiscoveryService, Reflector } from '@nestjs/core';
-import { StackAuthService } from '../../repositories/stack-auth.service';
+import { StackAuthService } from '../../src/repositories/stack-auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 

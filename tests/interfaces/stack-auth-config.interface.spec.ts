@@ -1,5 +1,5 @@
-import { StackAuthAccessTypes, StackAuthConfig, StackAuthHeaders } from '../../interfaces/stack-auth-config.interface';
-import { StackAuthOptions, StackAuthOptionsFactory, LogLevel } from '../../interfaces/stack-auth-options';
+import { StackAuthAccessTypes, StackAuthConfig, StackAuthHeaders } from '../../src/interfaces/stack-auth-config.interface';
+import { StackAuthOptions, StackAuthOptionsFactory, LogLevel } from '../../src/interfaces/stack-auth-options';
 
 describe('Stack Auth Configuration Interfaces', () => {
 	describe('StackAuthConfig', () => {

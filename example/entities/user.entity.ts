@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ApiClientService } from '../../services/api-client.service';
-import { ObjectMap } from '../../interfaces/object-map.interface';
-import { SuccessResponse } from '../../interfaces/success-response.interface';
-import { IUser, IUserUpdate } from '../../interfaces/user.interface';
+import { ApiClientService } from '../../src/services/api-client.service';
+import { ObjectMap } from '../../src/interfaces/object-map.interface';
+import { SuccessResponse } from '../../src/interfaces/success-response.interface';
+import { IUser, IUserUpdate } from '../../src/interfaces/user.interface';
 import { Team } from './team.entity';
 
 @ObjectType('User')

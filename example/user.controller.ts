@@ -1,7 +1,7 @@
 import { Controller, Get, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { IUserQueryParams } from '../interfaces/user.interface';
-import { User } from '../models/user.model';
+import { IUserQueryParams } from '../src/interfaces/user.interface';
+import { User } from '../src/models/user.model';
 
 @Controller('users')
 export class UserController {

@@ -1,10 +1,9 @@
-import * as stackAuth from '../index';
-import { StackAuthModule } from '../stack-auth.module';
-import { InjectStackAuthRepository } from '../decorators/inject-stack-auth.decorator';
-import { StackAuthService } from '../decorators/stack-auth-service.decorator';
-import { SetStackAuthOptions } from '../decorators/set-stack-auth-options';
-import { User } from '../example/entities/user.entity';
-import { Team } from '../example/entities/team.entity';
+import * as stackAuth from '../src/index';
+import { StackAuthModule } from '../src/stack-auth.module';
+import { InjectStackAuthRepository } from '../src/decorators/inject-stack-auth.decorator';
+import { StackAuthService } from '../src/decorators/stack-auth-service.decorator';
+import { SetStackAuthOptions } from '../src/decorators/set-stack-auth-options';
+import { User } from '../src/models/user.model';
 
 describe('Index Exports', () => {
 	it('should export all required modules and decorators', () => {
@@ -23,8 +22,6 @@ describe('Index Exports', () => {
 		// Interfaces de entidades
 		expect(stackAuth.User).toBeDefined();
 		expect(stackAuth.User).toBe(User);
-		expect(stackAuth.Team).toBeDefined();
-		expect(stackAuth.Team).toBe(Team);
 	});
 
 	it('should export all required types and interfaces', () => {
@@ -34,6 +31,5 @@ describe('Index Exports', () => {
 		expect(Object.keys(stackAuth)).toContain('StackAuthService');
 		expect(Object.keys(stackAuth)).toContain('SetStackAuthOptions');
 		expect(Object.keys(stackAuth)).toContain('User');
-		expect(Object.keys(stackAuth)).toContain('Team');
 	});
 });
