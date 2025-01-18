@@ -10,12 +10,10 @@ export class UserService {
 	constructor(@InjectStackAuthRepository('server.users') private readonly usersRepository: UsersServerService) {}
 
 	async getUser(userId: string): Promise<User> {
-		return this.usersRepository.getUser(userId).then(
-			async (user) =>
-				await user.update({
-					display_name: 'John Doe Maria',
-					primary_email_auth_enabled: false,
-				}),
+		return this.usersRepository.getUser(userId).then((user) =>
+			user.update({
+				display_name: 'maria 2',
+			}),
 		);
 	}
 

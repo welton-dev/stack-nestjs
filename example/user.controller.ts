@@ -9,7 +9,6 @@ export class UserController {
 
 	@Get(':userId')
 	async getCurrentUser(@Param('userId') userId: string): Promise<User | null> {
-		console.log(userId);
 		return await this.userService.getUser(userId);
 	}
 

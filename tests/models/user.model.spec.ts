@@ -82,26 +82,26 @@ describe('User', () => {
 		it('should update user and return new instance', async () => {
 			const updateData = { display_name: 'Updated Name' };
 			const updatedUserData = { ...mockUserData, ...updateData };
-			apiClient.put = jest.fn().mockResolvedValue(updatedUserData);
+			apiClient.patch = jest.fn().mockResolvedValue(updatedUserData);
 
 			const updatedUser = await user.update(updateData);
 
 			expect(updatedUser).toBeInstanceOf(User);
 			expect(updatedUser.display_name).toBe(updateData.display_name);
-			expect(apiClient.put).toHaveBeenCalledWith('/users/123', updateData);
+			expect(apiClient.patch).toHaveBeenCalledWith('/users/123', updateData);
 		});
 	});
 
 	describe('save', () => {
 		it('should save user and return new instance', async () => {
 			const savedUserData = { ...mockUserData, client_metadata: { key: 'value' } };
-			apiClient.post = jest.fn().mockResolvedValue(savedUserData);
+			apiClient.patch = jest.fn().mockResolvedValue(savedUserData);
 
 			const savedUser = await user.save();
 
 			expect(savedUser).toBeInstanceOf(User);
 			expect(savedUser.client_metadata).toEqual({ key: 'value' });
-			expect(apiClient.post).toHaveBeenCalledWith('/users/123', user);
+			expect(apiClient.patch).toHaveBeenCalledWith('/users/123', user);
 		});
 	});
 
