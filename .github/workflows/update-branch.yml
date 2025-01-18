@@ -6,7 +6,6 @@ on:
             - main
             - develop
             - beta
-            - alpha
 
 jobs:
     update-branches:
