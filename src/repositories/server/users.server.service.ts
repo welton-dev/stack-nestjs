@@ -19,7 +19,7 @@ export class UsersServerService {
 		try {
 			const userData = await this.apiClient.get<IUser>(`/users/${userId}`);
 			return new User(userData, this.apiClient);
-		} catch (error) {
+		} catch {
 			throw new Error('Failed to get user');
 		}
 	}

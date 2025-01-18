@@ -18,13 +18,13 @@ export interface IUser {
 	server_metadata: ObjectMap | null;
 }
 
-export interface IUserUpdate extends Partial<Omit<IUser, 'id'>> {}
+export type IUserUpdate = Partial<Omit<IUser, 'id' | 'created_at' | 'updated_at'>>;
 
 export interface IUserResponse extends SuccessResponse {
 	user: IUser;
 }
 
-export interface IUserCreate extends Partial<IUser> {
+export interface IUserCreate {
 	primary_email: string;
 	display_name: string;
 }
