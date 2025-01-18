@@ -1,6 +1,5 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { StackAuthService } from '../../decorators/stack-auth-service.decorator';
-import { STACK_AUTH_LOGGER } from '../../provider.declarations';
 import { ApiClientService } from '../../services/api-client.service';
 import { SuccessResponse } from '../../interfaces/success-response.interface';
 import { IUserQueryParams, IUserListResponse, IUser } from '../../interfaces/user.interface';
@@ -9,10 +8,7 @@ import { User } from '../../models/user.model';
 @Injectable()
 @StackAuthService({ type: 'server', name: 'users' })
 export class UsersServerService {
-	constructor(
-		private readonly apiClient: ApiClientService,
-		@Inject(STACK_AUTH_LOGGER) private readonly logger: Logger,
-	) {}
+	constructor(private readonly apiClient: ApiClientService) {}
 
 	/**
 	 *Retrieves a user based on the provided user ID

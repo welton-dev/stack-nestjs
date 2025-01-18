@@ -22,12 +22,12 @@ export class User {
 
 	constructor(data: Partial<IUser>, apiClient?: ApiClientService) {
 		if (apiClient) {
-			this.apiClient = apiClient;
+			this.setApiClient(apiClient);
 		}
 		Object.assign(this, data);
 	}
 
-	setApiClient(apiClient: ApiClientService): User {
+	setApiClient(apiClient: ApiClientService): this {
 		this.apiClient = apiClient;
 		return this;
 	}
@@ -38,16 +38,16 @@ export class User {
 	}
 
 	async update(data: IUserUpdate): Promise<User> {
-		const response = await this.apiClient.put<IUser>('/users/' + this.id, data);
-		return new User(response, this.apiClient);
+		const response = await this.apiClient.patch<IUser>('/users/' + this.id, data);
+		return new User(response);
 	}
 
 	async save(): Promise<User> {
-		const response = await this.apiClient.post<IUser>('/users/' + this.id, this);
-		return new User(response, this.apiClient);
+		const response = await this.apiClient.patch<IUser>('/users/' + this.id, this);
+		return new User(response);
 	}
 
-	toJSON() {
+	toJSON(): IUser {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { apiClient, ...json } = this;
 		return json;

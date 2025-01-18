@@ -34,7 +34,7 @@ import { REQUEST } from '@nestjs/core';
 			http: true,
 		}),
 		ConfigModule.forRoot({
-			envFilePath: '.env.local',
+			envFilePath: '.env.test',
 			isGlobal: true,
 		}),
 		StackAuthModule.registerAsync({

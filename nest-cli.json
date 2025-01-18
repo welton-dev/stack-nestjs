@@ -5,6 +5,7 @@
 		"example": {
 			"type": "application",
 			"entryFile": "example/main",
+			"sourceRoot": "example",
 			"compilerOptions": {
 				"tsConfigPath": "example/tsconfig.json",
 				"webpack": false,
