@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/welton-dev/stack-nestjs/compare/v1.1.0...v1.1.1) (2025-01-18)
+
+
+### Bug Fixes
+
+* add bot ([#9](https://github.com/welton-dev/stack-nestjs/issues/9)) ([a809460](https://github.com/welton-dev/stack-nestjs/commit/a809460db72328c5c9ee2185f9d0fb86104e90de))
+* branch update ([674839d](https://github.com/welton-dev/stack-nestjs/commit/674839d811ad5204c0a3c269f56a178db3a32cf4))
+* remove workflow ([#10](https://github.com/welton-dev/stack-nestjs/issues/10)) ([32f41cc](https://github.com/welton-dev/stack-nestjs/commit/32f41cc4c4afa41bdec023b7ad2dd2f7c6a596ea))
+
 # [1.1.0](https://github.com/welton-dev/stack-nestjs/compare/v1.0.2...v1.1.0) (2025-01-16)
 
 
