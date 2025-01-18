@@ -65,7 +65,7 @@ jobs:
               run: yarn build
 
             - name: Validate commit messages
-              uses: wagoid/commitlint-github-action@v5
+              uses: wagoid/commitlint-github-action@v6
 
     security:
         runs-on: ubuntu-latest
