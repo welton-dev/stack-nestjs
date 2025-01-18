@@ -14,9 +14,7 @@
 
 ## Source Branch
 
-- [ ] alpha (initial development)
-- [ ] beta (testing)
-- [ ] develop (pre-release)
+- [ ] dev (development)
 - [ ] main (production)
 
 ## Related Issues
