@@ -24,6 +24,7 @@
 		"preversion": "yarn lint",
 		"version": "yarn format && git add -A src",
 		"postversion": "git push && git push --tags",
+		"test": "jest --config jest.config.js --detectOpenHandles",
 		"tests": "jest --config jest.config.js --detectOpenHandles",
 		"tests:watch": "jest --config jest.config.js --watch",
 		"tests:cov": "jest --config jest.config.js --coverage",
