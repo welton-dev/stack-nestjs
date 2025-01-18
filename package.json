@@ -1,6 +1,6 @@
 {
 	"name": "@stackauth/nestjs",
-	"version": "1.1.1",
+	"version": "1.2.0-develop.1",
 	"description": "Pacote de consumo de API de autenticação para aplicativos NestJS",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
