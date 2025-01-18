@@ -180,32 +180,26 @@ export class UsersController {
 
 ### Client Mode
 
-| Name     | Injection                                       |
-| -------- | ----------------------------------------------- |
-| Users    | `@InjectStackAuthRepository('client.users')`    |
+| Name  | Injection                                    |
+| ----- | -------------------------------------------- |
+| Users | `@InjectStackAuthRepository('client.users')` |
 
 ## Workflow and Versioning
 
 The project uses a branch-based workflow to ensure quality and stability:
 
 ```
-alpha -> beta -> develop -> main
-  ↑       ↑        ↑         ↑
-  |       |        |         |
-  |       |        |    (production)
-  |       |        |
-  |       |    (pre-release)
-  |       |
-  |   (beta testing)
-  |
-(initial development)
+   dev -> main
+    ↑       ↑
+   	|	(production)
+    |
+(development)
+
 ```
 
 ### Branches
 
-- `alpha`: Initial feature development
-- `beta`: Testing and validation version
-- `develop`: Pre-release version with tested features
+- `dev`: Pre-release version with tested features
 - `main`: Stable production version
 
 ### NPM Tags
@@ -219,19 +213,12 @@ npm install @stackauth/nestjs@latest
 # Pre-release version (develop)
 npm install @stackauth/nestjs@next
 
-# Beta version (beta)
-npm install @stackauth/nestjs@beta
-
-# Alpha version (alpha)
-npm install @stackauth/nestjs@alpha
 ```
 
 ### Development Flow
 
-1. New features start in the `alpha` branch
-2. After initial development, merge to `beta` via PR
-3. After testing and validation, merge to `develop` via PR
-4. When ready for production, merge to `main` via PR
+1. Make changes to `dev` via PR
+2. When ready for production, merge to `main` via PR
 
 ### Semantic Versioning
 
@@ -240,9 +227,8 @@ This project follows [Semantic Versioning](https://semver.org/) using [Semantic 
 #### Version Numbers
 
 Each merge in any branch automatically generates a new version with the appropriate prefix:
-- `alpha`: `1.0.0-alpha.1`
-- `beta`: `1.0.0-beta.1`
-- `develop`: `1.0.0-develop.1`
+
+- `dev`: `1.0.0-dev.1`
 - `main`: `1.0.0`
 
 #### Commit Message Format
@@ -258,6 +244,7 @@ Each commit message consists of a **header**, a **body** and a **footer**:
 ```
 
 #### Types
+
 - `feat`: A new feature (triggers a MINOR version bump)
 - `fix`: A bug fix (triggers a PATCH version bump)
 - `perf`: A code change that improves performance
@@ -270,8 +257,10 @@ Each commit message consists of a **header**, a **body** and a **footer**:
 - `revert`: Reverts a previous commit
 
 #### Breaking Changes
+
 - Adding `BREAKING CHANGE:` in the commit footer will trigger a MAJOR version bump
 - Example:
+
 ```
 feat(auth): change authentication API
 
@@ -280,15 +269,16 @@ Previous methods will no longer work.
 ```
 
 #### Version Bumping Rules
+
 - **MAJOR** version (1.0.0 → 2.0.0)
-  - When making incompatible API changes
-  - Triggered by `BREAKING CHANGE:` in commit message
+    - When making incompatible API changes
+    - Triggered by `BREAKING CHANGE:` in commit message
 - **MINOR** version (1.0.0 → 1.1.0)
-  - When adding functionality in a backwards compatible manner
-  - Triggered by `feat:` commits
+    - When adding functionality in a backwards compatible manner
+    - Triggered by `feat:` commits
 - **PATCH** version (1.0.0 → 1.0.1)
-  - When making backwards compatible bug fixes
-  - Triggered by `fix:` commits
+    - When making backwards compatible bug fixes
+    - Triggered by `fix:` commits
 
 #### Examples
 

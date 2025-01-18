@@ -4,9 +4,8 @@ on:
     pull_request:
         branches:
             - main
-            - develop
-            - beta
-            - alpha
+            - dev
+
 permissions:
     pull-requests: write
 jobs:
