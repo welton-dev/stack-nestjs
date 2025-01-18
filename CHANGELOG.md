@@ -1,3 +1,15 @@
+# [1.2.0-develop.1](https://github.com/welton-dev/stack-nestjs/compare/v1.1.1...v1.2.0-develop.1) (2025-01-18)
+
+
+### Bug Fixes
+
+* issues ([ee01edd](https://github.com/welton-dev/stack-nestjs/commit/ee01edd5a70f51fadb8f58d9f95aa4cf6f631b3c))
+
+
+### Features
+
+* update for news ([05b979d](https://github.com/welton-dev/stack-nestjs/commit/05b979d44a7ccfa57788eaab2f74f31b20278a66))
+
 ## [1.1.1](https://github.com/welton-dev/stack-nestjs/compare/v1.1.0...v1.1.1) (2025-01-18)
 
 
