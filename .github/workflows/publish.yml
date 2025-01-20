@@ -66,6 +66,8 @@ jobs:
 
             - name: Sync dev with main
               if: github.ref == 'refs/heads/main'
+              env:
+                  GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
                   git checkout dev
                   git pull origin dev
@@ -77,4 +79,4 @@ jobs:
                       git add package.json CHANGELOG.md
                       git commit --amend -m "chore: sync dev with main [skip ci]"
                   fi
-                  git push origin dev
+                  git push https://${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git dev
