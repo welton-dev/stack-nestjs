@@ -34,7 +34,7 @@ jobs:
               run: yarn lint
 
             - name: Run tests
-              run: yarn tests
+              run: yarn test
 
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5

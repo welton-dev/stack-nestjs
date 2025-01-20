@@ -51,7 +51,7 @@
 			"@semantic-release/github",
 			{
 				"successComment": false,
-				"failTitle": false,
+				"failCommentCondition": "never",
 				"releasedLabels": false,
 				"addReleases": "bottom"
 			}
