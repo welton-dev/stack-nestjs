@@ -1,6 +1,6 @@
 # Stack Auth NestJS Module
 
-[![CI](https://github.com/welton-dev/stack-nestjs/actions/workflows/ci.yml/badge.svg)](https://github.com/welton-dev/stack-nestjs/actions)
+[![CI](https://github.com/welton-dev/stack-nestjs/actions/workflows/publish.yml/badge.svg)](https://github.com/welton-dev/stack-nestjs/actions)
 [![codecov](https://codecov.io/gh/welton-dev/stack-nestjs/branch/main/graph/badge.svg)](https://codecov.io/gh/welton-dev/stack-nestjs)
 [![npm version](https://badge.fury.io/js/@stackauth%2Fnestjs.svg)](https://badge.fury.io/js/@stackauth%2Fnestjs)
 [![NPM Downloads](https://img.shields.io/npm/dm/@stackauth/nestjs.svg)](https://www.npmjs.com/package/@stackauth/nestjs)
@@ -75,13 +75,10 @@ export class UsersService {
 		private readonly usersRepo: UsersServerService,
 	) {}
 
-	// Get and update user
+	// Get
 	async getUser(userId: string): Promise<User> {
 		const user = await this.usersRepo.getUser(userId);
-		return user.update({
-			display_name: 'New Name',
-			primary_email_auth_enabled: false,
-		});
+		return user;
 	}
 
 	// Update profile
