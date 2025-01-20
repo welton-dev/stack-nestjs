@@ -1,3 +1,10 @@
+## [1.2.1-develop.1](https://github.com/welton-dev/stack-nestjs/compare/v1.2.0...v1.2.1-develop.1) (2025-01-20)
+
+
+### Performance Improvements
+
+* **package:** update packages ([#25](https://github.com/welton-dev/stack-nestjs/issues/25)) ([d399db9](https://github.com/welton-dev/stack-nestjs/commit/d399db9989c8c3fd61a09668ef6396c251bd2241))
+
 # [1.2.0](https://github.com/welton-dev/stack-nestjs/compare/v1.1.1...v1.2.0) (2025-01-20)
 
 
