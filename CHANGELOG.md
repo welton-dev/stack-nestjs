@@ -15,6 +15,23 @@
 
 * **package:** update packages ([#25](https://github.com/welton-dev/stack-nestjs/issues/25)) ([d399db9](https://github.com/welton-dev/stack-nestjs/commit/d399db9989c8c3fd61a09668ef6396c251bd2241))
 
+# [1.2.0-develop.1](https://github.com/welton-dev/stack-nestjs/compare/v1.1.1...v1.2.0-develop.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* issues ([f212380](https://github.com/welton-dev/stack-nestjs/commit/f212380fbd13b547b01026284493f8584e86bdc2))
+
+
+### Features
+
+* update for news ([e961b89](https://github.com/welton-dev/stack-nestjs/commit/e961b895a6c73d11644c88e2300f9d2b011a80b5))
+
+
+### Performance Improvements
+
+* **package:** update packages ([#25](https://github.com/welton-dev/stack-nestjs/issues/25)) ([d399db9](https://github.com/welton-dev/stack-nestjs/commit/d399db9989c8c3fd61a09668ef6396c251bd2241))
+
 # [1.2.0-develop.1](https://github.com/welton-dev/stack-nestjs/compare/v1.1.1...v1.2.0-develop.1) (2025-01-18)
 
 
