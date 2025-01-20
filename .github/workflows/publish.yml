@@ -64,11 +64,17 @@ jobs:
                   GIT_COMMITTER_EMAIL: '1117016+github-actions[bot]@users.noreply.github.com'
               run: npx semantic-release
 
-            - name: Merge master into develop
+            - name: Sync dev with main
               if: github.ref == 'refs/heads/main'
               run: |
                   git checkout dev
-                  sudo chown $(id -u) .git/logs/refs/heads/dev
-                  git fetch
-                  git merge origin/main
+                  git pull origin dev
+                  # Resolve conflicts in favor of main for version-related files
+                  git merge -X theirs origin/main --no-edit -m "chore: sync dev with main [skip ci]"
+                  # If there are conflicts, take main's version
+                  if git status | grep "both modified:"; then
+                      git checkout --theirs package.json CHANGELOG.md
+                      git add package.json CHANGELOG.md
+                      git commit --amend -m "chore: sync dev with main [skip ci]"
+                  fi
                   git push origin dev
