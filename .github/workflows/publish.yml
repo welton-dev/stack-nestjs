@@ -24,8 +24,8 @@ jobs:
 
         steps:
             - name: Generate token
+              uses: actions/create-github-app-token@v1
               id: generate-token
-              uses: tibdex/github-app-token@v2
               with:
                   app_id: ${{ secrets.MY_RELEASER_ID }}
                   private_key: ${{ secrets.MY_RELEASER_PRIVATE_KEY }}
@@ -35,6 +35,7 @@ jobs:
               with:
                   token: ${{ steps.generate-token.outputs.token }}
                   fetch-depth: 0
+                  ref: ${{ github.ref }}
                   persist-credentials: false
 
             - name: Setup Node.js
