@@ -69,6 +69,7 @@ jobs:
               env:
                   GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
+                  git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
                   git checkout dev
                   git pull origin dev
                   # Resolve conflicts in favor of main for version-related files
@@ -79,4 +80,4 @@ jobs:
                       git add package.json CHANGELOG.md
                       git commit --amend -m "chore: sync dev with main [skip ci]"
                   fi
-                  git push https://${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git dev
+                  git push origin dev
