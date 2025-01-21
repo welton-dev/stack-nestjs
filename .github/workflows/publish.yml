@@ -70,14 +70,14 @@ jobs:
                   GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
                   git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+                  git fetch origin dev
                   git checkout dev
-                  git pull origin dev
-                  # Resolve conflicts in favor of main for version-related files
-                  git merge -X theirs origin/main --no-edit -m "chore: sync dev with main [skip ci]"
+                  # Use rebase instead of merge to avoid merge commits
+                  git rebase main
                   # If there are conflicts, take main's version
                   if git status | grep "both modified:"; then
                       git checkout --theirs package.json CHANGELOG.md
                       git add package.json CHANGELOG.md
-                      git commit --amend -m "chore: sync dev with main [skip ci]"
+                      git rebase --continue
                   fi
                   git push origin dev
