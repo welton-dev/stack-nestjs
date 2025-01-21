@@ -4,14 +4,14 @@ import { StackAuthService } from '../../decorators/stack-auth-service.decorator'
 @Injectable()
 @StackAuthService({ type: 'client', name: 'users' })
 export class UsersClientService {
-	constructor() {}
-	async findAll() {
-		// implementação
-		return [];
-	}
+    constructor() {}
+    async findAll() {
+        // implementação
+        return [];
+    }
 
-	async findOne(id: string) {
-		// implementação
-		return { id };
-	}
+    async findOne(id: string) {
+        // implementação
+        return { id };
+    }
 }
